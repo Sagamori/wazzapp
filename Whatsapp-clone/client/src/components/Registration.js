@@ -1,71 +1,50 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { v4 as uuidV4 } from 'uuid';
 
-export default function RegistrationForm() {
+import { Button, Container, Form } from 'react-bootstrap';
+
+export default function RegistrationForm({ onIdSubmit, onRegistration }) {
+  const numRef = useRef();
+  const usernameRef = useRef();
+
+  // console.log(numRef.current.value, ' numRef');
+  // console.log(usernameRef.current.value, ' username ref');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onIdSubmit(uuidV4());
+  };
+
+  const login = (e) => {
+    e.preventDefault();
+    console.log('login');
+    onRegistration(false);
+  };
+
   return (
-    <div className="form">
-      <div className="form-body">
-        <div className="username">
-          <label className="form__label" for="firstName">
-            First Name{' '}
-          </label>
-          <input
-            className="form__input"
+    <Container
+      className="align-items-center d-flex justify-content-center"
+      style={{ height: '100vh' }}
+    >
+      <Form className="w-50" onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>Phone Number*</Form.Label>
+          <Form.Control
             type="text"
-            id="firstName"
-            placeholder="First Name"
+            placeholder="+995-123-456-789"
+            ref={numRef}
+            required
           />
-        </div>
-        <div className="lastname">
-          <label className="form__label" for="lastName">
-            Last Name{' '}
-          </label>
-          <input
-            type="text"
-            name=""
-            id="lastName"
-            className="form__input"
-            placeholder="LastName"
-          />
-        </div>
-        <div className="email">
-          <label className="form__label" for="email">
-            Email{' '}
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="form__input"
-            placeholder="Email"
-          />
-        </div>
-        <div className="password">
-          <label className="form__label" for="password">
-            Password{' '}
-          </label>
-          <input
-            className="form__input"
-            type="password"
-            id="password"
-            placeholder="Password"
-          />
-        </div>
-        <div className="confirm-password">
-          <label className="form__label" for="confirmPassword">
-            Confirm Password{' '}
-          </label>
-          <input
-            className="form__input"
-            type="password"
-            id="confirmPassword"
-            placeholder="Confirm Password"
-          />
-        </div>
-      </div>
-      <div class="footer">
-        <button type="submit" class="btn">
-          Register
-        </button>
-      </div>
-    </div>
+          <Form.Label>Username*</Form.Label>
+          <Form.Control type="text" ref={usernameRef} required />
+        </Form.Group>
+        <Button onClick="submit" className="mt-3">
+          SMS Authentication
+        </Button>
+        <Button onClick={login} variant="secondary" className="ms-3 mt-3">
+          Back to login
+        </Button>
+      </Form>
+    </Container>
   );
 }

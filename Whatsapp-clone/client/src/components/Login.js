@@ -1,10 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
-import { v4 as uuidV4 } from 'uuid';
-import RegistrationForm from './Registration';
 
-export default function Login({ onIdSubmit }) {
-  const [registration, setRegistration] = useState(false);
+export default function Login({ onIdSubmit, onRegistration }) {
   const idRef = useRef();
 
   const handleSubmit = (e) => {
@@ -12,33 +9,35 @@ export default function Login({ onIdSubmit }) {
     onIdSubmit(idRef.current.value);
   };
 
-  const createNewId = (e) => {
-    e.preventDefault();
-    onIdSubmit(uuidV4());
-  };
+  // const createNewId = (e) => {
+  //   e.preventDefault();
+  //   onIdSubmit(uuidV4());
+  // };
 
   const registerRequest = (e) => {
     e.preventDefault();
-    return <RegistrationForm />;
+    onRegistration(true);
   };
-  console.log(registration, ' reg');
-  return registration ? (
-    <RegistrationForm />
-  ) : (
+
+  return (
     <Container
-      className="align-items-center d-flex"
+      className="align-items-center d-flex justify-content-center"
       style={{ height: '100vh' }}
     >
-      <Form className="w-100" onSubmit={handleSubmit}>
+      <Form className="w-50" onSubmit={handleSubmit}>
         <Form.Group>
-          <Form.Label>Enter Your Id</Form.Label>
-          <Form.Control type="text" ref={idRef} required />
+          <Form.Label>Enter Your Mobile Number</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="+995-123-456-789"
+            ref={idRef}
+            required
+          />
         </Form.Group>
         <Button type="submit" className="me-2 my-2">
           Login
         </Button>
-
-        <Button onClick={() => setRegistration(true)} variant="secondary">
+        <Button onClick={registerRequest} variant="secondary">
           Registration
         </Button>
       </Form>
