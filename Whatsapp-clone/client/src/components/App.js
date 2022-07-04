@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import useLocalStorage from '../hooks/localStorage';
@@ -7,7 +7,6 @@ import { ConversationProvider } from '../contexts/ConversationProvider';
 import { SocketProvider } from '../contexts/SocketProvider';
 
 function App() {
-  const [token, setToken] = useState();
   const [id, setId] = useLocalStorage('id');
 
   const dashboard = (

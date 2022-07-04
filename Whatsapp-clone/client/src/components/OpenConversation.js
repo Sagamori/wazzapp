@@ -5,7 +5,6 @@ import { useConversation } from '../contexts/ConversationProvider';
 export default function OpenConversation({}) {
   const [text, setText] = useState('');
   const setRef = useCallback((node) => {
-    console.log(node, ' node');
     if (node) {
       node.scrollIntoView({ behavior: 'smooth' });
     }
@@ -29,6 +28,7 @@ export default function OpenConversation({}) {
           {selectedConversation.messages.map((message, index) => {
             const lastMessage =
               selectedConversation.messages.length - 1 === index;
+
             return (
               <div
                 ref={lastMessage ? setRef : null}

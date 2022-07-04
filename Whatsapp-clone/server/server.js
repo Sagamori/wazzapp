@@ -2,6 +2,7 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const express = require('express');
 const http = require('http');
+require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
 
@@ -24,6 +25,7 @@ io.on('connection', (socket) => {
       const newRecipients = recipients.filter((r) => r !== recipient);
 
       newRecipients.push(id);
+
       socket.broadcast.to(recipient).emit('receive-message', {
         recipients: newRecipients,
         sender: id,
