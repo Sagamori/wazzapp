@@ -4,20 +4,17 @@ const express = require("express");
 const http = require("http");
 const mongoose = require("mongoose");
 const router = require("./routes/user-routes.js");
-
-const PORT = process.env.PORT || 5000;
-
-mongoose.connect(
-  "mongodb+srv://aurelia:adamiani123@usermanagement.wgcgh.mongodb.net/chatUsers?retryWrites=true&w=majority",
-  () => console.log("db connected")
-);
+require("dotenv").config();
 
 const app = express();
-const server = http.createServer(app);
+const PORT = process.env.PORT || 5000;
 
+mongoose.connect(process.env.MONGO_URI, () => console.log("db connected"));
+
+app.use(cors());
 app.use(express.json());
 app.use(router);
-app.use(cors({ origin: "*" }));
+const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
