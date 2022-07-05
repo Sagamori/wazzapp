@@ -8,6 +8,7 @@ export default function useLocalStorage(key, initialValue) {
   //using useState to get value from localStorage
   const [value, setValue] = useState(() => {
     const jsonValue = localStorage.getItem(prefixedKey);
+    console.log(jsonValue, ' jsonValue');
     if (jsonValue != null) return JSON.parse(jsonValue);
     if (typeof initialValue === 'function') {
       return initialValue();
@@ -18,6 +19,7 @@ export default function useLocalStorage(key, initialValue) {
 
   // saves ids if prefixedKey or/and value changes
   useEffect(() => {
+    console.log('useEffect');
     localStorage.setItem(prefixedKey, JSON.stringify(value));
   }, [prefixedKey, value]);
 
