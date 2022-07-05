@@ -38,7 +38,7 @@ export default function RegistrationForm({ onIdSubmit, onRegistration }) {
           <Form.Label>Username*</Form.Label>
           <Form.Control type="text" ref={usernameRef} required />
         </Form.Group>
-        <Button onClick="submit" className="mt-3">
+        <Button type="submit" className="mt-3">
           SMS Authentication
         </Button>
         <Button onClick={login} variant="secondary" className="ms-3 mt-3">

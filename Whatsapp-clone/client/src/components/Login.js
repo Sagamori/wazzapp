@@ -6,7 +6,8 @@ export default function Login({ onIdSubmit, onRegistration }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onIdSubmit(idRef.current.value);
+    console.log(e, ' es');
+    // onIdSubmit(idRef.current.value);
   };
 
   // const createNewId = (e) => {
@@ -15,8 +16,9 @@ export default function Login({ onIdSubmit, onRegistration }) {
   // };
 
   const registerRequest = (e) => {
+    // console.log(e);
     e.preventDefault();
-    onRegistration(true);
+    onRegistration('registration');
   };
 
   return (
