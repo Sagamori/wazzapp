@@ -1,24 +1,27 @@
 import React, { useRef } from 'react';
-import { v4 as uuidV4 } from 'uuid';
+import axios from 'axios';
 
 import { Button, Container, Form } from 'react-bootstrap';
 
-export default function RegistrationForm({ onIdSubmit, onRegistration }) {
+export default function RegistrationForm({ onNumSubmit, onRedirection }) {
   const numRef = useRef();
   const usernameRef = useRef();
 
-  // console.log(numRef.current.value, ' numRef');
-  // console.log(usernameRef.current.value, ' username ref');
-
-  const handleSubmit = (e) => {
+  const register = async (e) => {
     e.preventDefault();
-    onIdSubmit(uuidV4());
+    try {
+      await axios.post('http://localhost:5000/registration', {
+        phone_number: numRef.current.value,
+        username: usernameRef.current.value,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const login = (e) => {
     e.preventDefault();
-    console.log('login');
-    onRegistration(false);
+    onRedirection('login');
   };
 
   return (
@@ -26,7 +29,7 @@ export default function RegistrationForm({ onIdSubmit, onRegistration }) {
       className="align-items-center d-flex justify-content-center"
       style={{ height: '100vh' }}
     >
-      <Form className="w-50" onSubmit={handleSubmit}>
+      <Form className="w-50" onSubmit={register}>
         <Form.Group>
           <Form.Label>Phone Number*</Form.Label>
           <Form.Control

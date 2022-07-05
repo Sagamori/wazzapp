@@ -8,7 +8,7 @@ import { SocketProvider } from '../contexts/SocketProvider';
 import RegistrationForm from './Registration';
 
 function App() {
-  const [test, setTest] = useState('login');
+  const [redirect, setRedirect] = useState('login');
   const [id, setId] = useLocalStorage('id');
 
   const dashboard = (
@@ -21,15 +21,14 @@ function App() {
     </SocketProvider>
   );
 
-  // console.log(registration, ' reg');
-  console.log(test);
-
-  if (test === 'login') {
-    return <Login onIdSubmit={setId} onRegistration={setTest} />;
+  console.log(id, ' id');
+  if (redirect === 'login') {
+    return <Login onNumSubmit={setId} onRedirection={setRedirect} />;
   }
-  if (test === 'registration') {
-    return <RegistrationForm onIdSubmit={setId} onRegistration={setTest} />;
-  } else {
+  if (redirect === 'registration') {
+    return <RegistrationForm onNumSubmit={setId} onRedirection={setRedirect} />;
+  }
+  if (redirect === 'dashboard' && id) {
     return dashboard;
   }
 }

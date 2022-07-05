@@ -1,24 +1,18 @@
 import React, { useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 
-export default function Login({ onIdSubmit, onRegistration }) {
+export default function Login({ onNumSubmit, onRedirection }) {
   const idRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e, ' es');
-    // onIdSubmit(idRef.current.value);
+    onNumSubmit(idRef.current.value);
+    onRedirection('dashboard');
   };
 
-  // const createNewId = (e) => {
-  //   e.preventDefault();
-  //   onIdSubmit(uuidV4());
-  // };
-
   const registerRequest = (e) => {
-    // console.log(e);
     e.preventDefault();
-    onRegistration('registration');
+    onRedirection('registration');
   };
 
   return (
@@ -46,7 +40,3 @@ export default function Login({ onIdSubmit, onRegistration }) {
     </Container>
   );
 }
-
-// <Button onClick={createNewId} variant="secondary">
-//   Registration
-// </Button>

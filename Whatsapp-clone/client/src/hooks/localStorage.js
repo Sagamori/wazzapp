@@ -18,10 +18,10 @@ export default function useLocalStorage(key, initialValue) {
   });
 
   // saves ids if prefixedKey or/and value changes
-  // useEffect(() => {
-  //   console.log('useEffect');
-  //   localStorage.setItem(prefixedKey, JSON.stringify(value));
-  // }, [prefixedKey, value]);
+  useEffect(() => {
+    console.log('useEffect');
+    localStorage.setItem(prefixedKey, JSON.stringify(value));
+  }, [prefixedKey, value]);
 
   return [value, setValue];
 }
