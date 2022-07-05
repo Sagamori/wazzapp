@@ -1,4 +1,5 @@
-const User = require("../database/models/user-model.js");
+const User = require('../database/models/user-model.js');
+const messagebird = require('messagebird')('ubZzocWfocNCDAli2MMhswHUE');
 
 const register = async (req, res) => {
   const { username, phone_number } = req.body;
@@ -9,27 +10,30 @@ const register = async (req, res) => {
       username,
       phone_number,
     });
-    res.json({ msg: "Registration Successful" });
+    res.json({ msg: 'Registration Successful' });
   } catch (error) {
     console.log(error);
   }
 };
 
 const sendCode = async (req, res) => {
+  console.log(req.body, 'body in server sendCode function');
   const { number } = req.body;
   console.log(number);
 
   messagebird.verify.create(
     number,
     {
-      originator: "Miqela",
-      template: "Your verification code is %token.",
+      originator: 'Miqela',
+      template: 'Your verification code is %token.',
     },
     function (err, response) {
       if (err) {
+        res.json({ error: err.errors[0].description });
         console.log(err);
       } else {
-        console.log(response);
+        res.json({ id: response.id });
+        console.log({ id: response.id });
       }
     }
   );
@@ -41,8 +45,10 @@ const verify = async (req, res) => {
 
   messagebird.verify.verify(id, token, (err, response) => {
     if (err) {
+      res.json({ error: err.errors[0].description, id });
       console.log(err);
     } else {
+      res.json(response);
       console.log(response);
     }
   });
