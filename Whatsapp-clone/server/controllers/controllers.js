@@ -15,4 +15,37 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = register;
+const sendCode = async (req, res) => {
+  const { number } = req.body;
+  console.log(number);
+
+  messagebird.verify.create(
+    number,
+    {
+      originator: "Miqela",
+      template: "Your verification code is %token.",
+    },
+    function (err, response) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(response);
+      }
+    }
+  );
+};
+
+const verify = async (req, res) => {
+  const id = req.body.id;
+  const token = req.body.token;
+
+  messagebird.verify.verify(id, token, (err, response) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(response);
+    }
+  });
+};
+
+module.exports = { register, sendCode, verify };
