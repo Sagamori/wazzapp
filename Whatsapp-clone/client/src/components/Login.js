@@ -1,24 +1,42 @@
-import React, { useRef } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import axios from "axios";
+import React, { useRef } from "react";
+import { Button, Container, Form } from "react-bootstrap";
 
 export default function Login({ onNumSubmit, onRedirection }) {
-  const idRef = useRef();
+  const numRef = useRef();
+  const usernameRef = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log(numRef.current.value, usernameRef.current.value);
+
     e.preventDefault();
-    onNumSubmit(idRef.current.value);
-    onRedirection('dashboard');
+
+    try {
+      const { data } = await axios.post("http://localhost:5000/login", {
+        phone_number: numRef.current.value,
+        username: usernameRef.current.value,
+      });
+      console.log(data, " login data, login comp");
+
+      // setId(data.id);
+
+      // onRedirection('verify_number');
+    } catch (error) {
+      console.log(error);
+    }
+    onNumSubmit(numRef.current.value);
+    onRedirection("dashboard");
   };
 
   const registerRequest = (e) => {
     e.preventDefault();
-    onRedirection('registration');
+    onRedirection("registration");
   };
 
   return (
     <Container
       className="align-items-center d-flex justify-content-center"
-      style={{ height: '100vh' }}
+      style={{ height: "100vh" }}
     >
       <Form className="w-50" onSubmit={handleSubmit}>
         <Form.Group>
@@ -26,9 +44,11 @@ export default function Login({ onNumSubmit, onRedirection }) {
           <Form.Control
             type="text"
             placeholder="+995-123-456-789"
-            ref={idRef}
+            ref={numRef}
             required
           />
+          <Form.Label>Username</Form.Label>
+          <Form.Control type="text" ref={usernameRef} required />
         </Form.Group>
         <Button type="submit" className="me-2 my-2">
           Login

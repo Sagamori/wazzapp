@@ -17,6 +17,24 @@ const register = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { username, phone_number } = req.body;
+  const [user] = await User.find({
+    $or: [{ phone_number }, { username }],
+  }).select(["username", "phone_number"]);
+
+  if (!user) {
+    return res.json({ message: "User doesn't exists!!!" });
+  } else if (
+    user &&
+    user.username === username &&
+    user.phone_number === phone_number
+  ) {
+    return res.json(user);
+  }
+  res.json({ message: "Invalid Credentials!!!" });
+};
+
 const sendCode = async (req, res) => {
   console.log(req.body, "body in server sendCode function");
 
@@ -56,4 +74,4 @@ const verify = async (req, res) => {
   });
 };
 
-module.exports = { register, sendCode, verify };
+module.exports = { register, sendCode, verify, login };
