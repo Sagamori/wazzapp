@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 const User = require("../database/models/user-model.js");
-const messagebird = require("messagebird")("ubZzocWfocNCDAli2MMhswHUE");
-=======
-const User = require('../database/models/user-model.js');
-const messagebird = require('messagebird')('ubZzocWfocNCDAli2MMhswHUE');
+const messagebird = require("messagebird")("lEpl5MyA1H9lgc9bvddZyQRMp");
 
->>>>>>> 9caef07893f542c46d0872a831b1c30db3ece745
 const register = async (req, res) => {
   const { username, phone_number, password } = req.body;
   console.log(username, phone_number);
@@ -16,26 +11,23 @@ const register = async (req, res) => {
       phone_number,
       password,
     });
-    res.json({ msg: 'Registration Successful' });
+    res.json({ msg: "Registration Successful" });
   } catch (error) {
     console.log(error);
   }
 };
 
 const sendCode = async (req, res) => {
-<<<<<<< HEAD
   console.log(req.body, "body in server sendCode function");
-=======
-  console.log(req.body, 'body in server sendCode function');
->>>>>>> 9caef07893f542c46d0872a831b1c30db3ece745
+
   const { number } = req.body;
   console.log(number);
 
   messagebird.verify.create(
     number,
     {
-      originator: 'Miqela',
-      template: 'Your verification code is %token.',
+      originator: "Miqela",
+      template: "Your verification code is %token.",
     },
     function (err, response) {
       if (err) {
