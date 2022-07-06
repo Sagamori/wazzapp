@@ -1,19 +1,25 @@
-import React, { useRef } from 'react';
-import axios from 'axios';
+import React, { useRef } from "react";
+import axios from "axios";
 
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Container, Form } from "react-bootstrap";
 
 export default function RegistrationForm({ onNumSubmit, onRedirection }) {
   const numRef = useRef();
   const usernameRef = useRef();
 
-  const register = async (e) => {
+  const sendCode = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/registration', {
-        phone_number: numRef.current.value,
-        username: usernameRef.current.value,
+      console.log("here1");
+      const a = await axios.post("http://localhost:5000/sendCode", {
+        number: numRef.current.value,
       });
+
+      const b = await axios.post("http://localhost:5000/verify", {
+        id,
+        token,
+      });
+      console.log(a);
     } catch (error) {
       console.log(error);
     }
@@ -21,15 +27,15 @@ export default function RegistrationForm({ onNumSubmit, onRedirection }) {
 
   const login = (e) => {
     e.preventDefault();
-    onRedirection('login');
+    onRedirection("login");
   };
 
   return (
     <Container
       className="align-items-center d-flex justify-content-center"
-      style={{ height: '100vh' }}
+      style={{ height: "100vh" }}
     >
-      <Form className="w-50" onSubmit={register}>
+      <Form className="w-50" onSubmit={sendCode}>
         <Form.Group>
           <Form.Label>Phone Number*</Form.Label>
           <Form.Control

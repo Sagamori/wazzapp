@@ -1,13 +1,14 @@
 const User = require("../database/models/user-model.js");
-
+const messagebird = require("messagebird")("ubZzocWfocNCDAli2MMhswHUE");
 const register = async (req, res) => {
-  const { username, phone_number } = req.body;
+  const { username, phone_number, password } = req.body;
   console.log(username, phone_number);
 
   try {
     await User.create({
       username,
       phone_number,
+      password,
     });
     res.json({ msg: "Registration Successful" });
   } catch (error) {
@@ -16,6 +17,7 @@ const register = async (req, res) => {
 };
 
 const sendCode = async (req, res) => {
+  console.log(req.body, "body in server sendCode function");
   const { number } = req.body;
   console.log(number);
 
@@ -27,9 +29,11 @@ const sendCode = async (req, res) => {
     },
     function (err, response) {
       if (err) {
+        res.json({ error: err.errors[0].description });
         console.log(err);
       } else {
-        console.log(response);
+        res.json({ id: response.id });
+        console.log({ id: response.id });
       }
     }
   );
@@ -41,8 +45,10 @@ const verify = async (req, res) => {
 
   messagebird.verify.verify(id, token, (err, response) => {
     if (err) {
+      res.json({ error: err.errors[0].description, id });
       console.log(err);
     } else {
+      res.json(response);
       console.log(response);
     }
   });
