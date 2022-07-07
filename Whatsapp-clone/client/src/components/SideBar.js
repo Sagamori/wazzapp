@@ -8,7 +8,7 @@ import NewContactsModal from './NewContactsModal';
 const Conversation_Key = 'conversations';
 const Contacts_Key = 'contacts';
 
-export default function SideBar({ id }) {
+export default function SideBar({ number }) {
   const [activeKey, setActiveKey] = useState(Conversation_Key);
   const [modalOpen, setModalOpen] = useState(false);
   const conversationsOpen = activeKey === Conversation_Key;
@@ -22,10 +22,14 @@ export default function SideBar({ id }) {
       <Tab.Container activeKey={activeKey} onSelect={setActiveKey}>
         <Nav variant="tabs" className="justify-content-center">
           <Nav.Item>
-            <Nav.Link eventKey={Conversation_Key}>Conversations</Nav.Link>
+            <Nav.Link eventKey={Conversation_Key} style={{ cursor: 'pointer' }}>
+              Conversations
+            </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey={Contacts_Key}>Contacts</Nav.Link>
+            <Nav.Link eventKey={Contacts_Key} style={{ cursor: 'pointer' }}>
+              Contacts
+            </Nav.Link>
           </Nav.Item>
         </Nav>
         <Tab.Content className="border-end overflow-auto flex-grow-1">
@@ -37,7 +41,7 @@ export default function SideBar({ id }) {
           </Tab.Pane>
         </Tab.Content>
         <div className="p-2 border-top border-end small">
-          Your Id: <span className="text-muted">{id}</span>
+          Your Phone Number: <span className="text-muted">{number}</span>
           <Button
             onClick={() => setModalOpen(true)}
             className="rounded-0 w-100"

@@ -3,12 +3,12 @@ import { useConversation } from '../contexts/ConversationProvider';
 import OpenConversation from './OpenConversation';
 import SideBar from './SideBar';
 
-export default function Dashboard({ id }) {
+export default function Dashboard({ number }) {
   const { selectedConversation } = useConversation();
 
   return (
     <div className="d-flex" style={{ height: '100vh' }}>
-      <SideBar id={id} />
+      <SideBar number={number} />
 
       {
         // Trick: operation below --> if selectedConversation is true than OpenConversation

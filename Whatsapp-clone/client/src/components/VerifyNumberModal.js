@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useRef } from "react";
-import { Button, Container, Form, Modal } from "react-bootstrap";
+import axios from 'axios';
+import React, { useRef } from 'react';
+import { Button, Container, Form } from 'react-bootstrap';
 
 export default function VerifyNumberModal({
   id,
@@ -15,31 +15,31 @@ export default function VerifyNumberModal({
 
     try {
       // console.log(id, codeRef);
-      console.log(id, " sjdksdgbjk");
-      const a = await axios.post("http://localhost:5000/verify", {
+      console.log(id, ' sjdksdgbjk');
+      const a = await axios.post('http://localhost:5000/verify', {
         id,
         token: codeRef.current.value,
       });
 
       console.log(phone_number, username);
 
-      const b = await axios.post("http://localhost:5000/registration", {
+      const b = await axios.post('http://localhost:5000/registration', {
         phone_number,
         username,
       });
       console.log(b);
-      onRedirection("dashboard");
+      onRedirection('dashboard');
     } catch (error) {
-      console.log("error");
+      console.log('error');
       console.log(error);
-      console.log("till here");
+      console.log('till here');
     }
   };
 
   return (
     <Container
       className="d-flex flex-column justify-content-center  w-50"
-      style={{ height: "100vh" }}
+      style={{ height: '100vh' }}
     >
       <h1>Enter Code Here</h1>
 
