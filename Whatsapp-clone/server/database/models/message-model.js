@@ -3,10 +3,9 @@ const moment = require("moment");
 
 const MessageSchema = new mongoose.Schema(
   {
-    sender: { type: String },
-    receiver: { type: String },
-    message: { type: Number },
-    date: { type: Number, default: moment(new Date()).format("HH:mm") },
+    userId: { type: String },
+    conversations: [{ recipients: { type: String }, messages: { type: Array } }],
+    // date: { type: Number, default: moment(new Date()).format("HH:mm") },
   },
   { timestamps: true }
 );

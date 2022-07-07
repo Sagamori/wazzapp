@@ -11,22 +11,29 @@ import VerifyNumber from "./VerifyNumberModal";
 function App() {
   const [redirect, setRedirect] = useState("login");
   const [number, setNumber] = useState("");
-  console.log(number, "In app line 14");
+  const [id, setId] = useState("");
+  console.log(id, "In app line 15");
+  console.log(number, "In app line 16");
   console.log(redirect, " redirect in app");
   const dashboard = (
-    // <SocketProvider id={id}>
-    //   <ContactsProvider>
-    //     <ConversationProvider id={id}>
-    //       <Dashboard id={id} />
-    //     </ConversationProvider>
-    //   </ContactsProvider>
-    <>dashboard</>
-    // </SocketProvider>
+    <SocketProvider id={id}>
+      <ContactsProvider>
+        <ConversationProvider id={id}>
+          <Dashboard id={id} />
+        </ConversationProvider>
+      </ContactsProvider>
+    </SocketProvider>
   );
 
   // console.log(id, ' id');
   if (redirect === "login") {
-    return <Login onNumSubmit={setNumber} onRedirection={setRedirect} />;
+    return (
+      <Login
+        onNumSubmit={setNumber}
+        onIdSubmit={setId}
+        onRedirection={setRedirect}
+      />
+    );
   }
   if (redirect === "registration") {
     return (

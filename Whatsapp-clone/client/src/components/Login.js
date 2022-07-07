@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 
-export default function Login({ onNumSubmit, onRedirection }) {
+export default function Login({ onIdSubmit, onNumSubmit, onRedirection }) {
   const numRef = useRef();
   const usernameRef = useRef();
 
@@ -18,14 +18,12 @@ export default function Login({ onNumSubmit, onRedirection }) {
       });
       console.log(data, " login data, login comp");
 
-      // setId(data.id);
-
-      // onRedirection('verify_number');
+      onIdSubmit(data["_id"]);
+      onNumSubmit(numRef.current.value);
+      onRedirection("dashboard");
     } catch (error) {
       console.log(error);
     }
-    onNumSubmit(numRef.current.value);
-    onRedirection("dashboard");
   };
 
   const registerRequest = (e) => {
