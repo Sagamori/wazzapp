@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { Button, Container, Form, Modal } from "react-bootstrap";
-import VerifyNumberModal from "./VerifyNumberModal";
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { Button, Container, Form, Modal } from 'react-bootstrap';
+import VerifyNumberModal from './VerifyNumberModal';
 
-export default function RegistrationForm({ onRedirection }) {
+export default function RegistrationForm({ onRedirection, onNumber }) {
   const [id, setId] = useState();
   const numRef = useRef();
   const usernameRef = useRef();
@@ -11,14 +11,11 @@ export default function RegistrationForm({ onRedirection }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("http://localhost:5000/sendCode", {
+      const { data } = await axios.post('http://localhost:5000/sendCode', {
         number: numRef.current.value,
       });
-      console.log(data.id, " registration oid");
-
+      console.log(data.id, ' hehehe ');
       setId(data.id);
-
-      // onRedirection('verify_number');
     } catch (error) {
       console.log(error);
     }
@@ -26,7 +23,7 @@ export default function RegistrationForm({ onRedirection }) {
 
   const login = (e) => {
     e.preventDefault();
-    onRedirection("login");
+    onRedirection('login');
   };
 
   return id ? (
@@ -35,12 +32,13 @@ export default function RegistrationForm({ onRedirection }) {
       username={usernameRef.current.value}
       phone_number={numRef.current.value}
       onRedirection={onRedirection}
+      onNumber={onNumber}
     />
   ) : (
     <>
       <Container
         className="align-items-center d-flex justify-content-center"
-        style={{ height: "100vh" }}
+        style={{ height: '100vh' }}
       >
         <Form className="w-50" onSubmit={handleSubmit}>
           <Form.Group>

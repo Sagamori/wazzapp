@@ -1,12 +1,12 @@
-const mongoose = require("mongoose");
-const moment = require("moment");
+const mongoose = require('mongoose');
+// const moment = require('moment');
 
 const ContactSchema = new mongoose.Schema(
   {
     userId: { type: String },
     contacts: [
       {
-        number: { type: String },
+        phone_number: { type: String },
         username: { type: String },
       },
     ],
@@ -14,6 +14,6 @@ const ContactSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Contact = mongoose.model("Contact", ContactSchema);
+const Contact = mongoose.model('Contact', ContactSchema);
 
 module.exports = Contact;
