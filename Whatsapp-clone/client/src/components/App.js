@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import { ContactsProvider } from '../contexts/ContactsProvider';
 import { ConversationProvider } from '../contexts/ConversationProvider';
 import { SocketProvider } from '../contexts/SocketProvider';
 import RegistrationForm from './Registration';
+import useLocalStorage from '../hooks/localStorage';
 
 function App() {
-  const [redirect, setRedirect] = useState('login');
+  const [redirect, setRedirect] = useState('');
   const [number, setNumber] = useState('');
-  const [id, setId] = useState('');
+  // const [id, setId] = useState('');
+  const [id, setId] = useLocalStorage('id');
 
   const dashboard = (
     <SocketProvider id={id}>
@@ -38,6 +40,15 @@ function App() {
   if (redirect === 'dashboard') {
     return dashboard;
   }
+  return id ? (
+    dashboard
+  ) : (
+    <Login
+      onNumSubmit={setNumber}
+      onIdSubmit={setId}
+      onRedirection={setRedirect}
+    />
+  );
 }
 
 export default App;

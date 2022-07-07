@@ -9,7 +9,6 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('before axios login');
       const { data } = await axios.post('http://localhost:5000/login', {
         phone_number: numRef.current.value,
         username: usernameRef.current.value,
@@ -19,8 +18,9 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
         data.message !== "User doesn't exists!!!" &&
         data.message !== 'Invalid Credentials!!!'
       ) {
-        onIdSubmit(data['_id']);
+        // onIdSubmit(data['_id']);
         onNumSubmit(numRef.current.value);
+        onIdSubmit(data['_id']);
         return onRedirection('dashboard');
       }
 
