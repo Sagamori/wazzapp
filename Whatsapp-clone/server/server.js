@@ -1,15 +1,15 @@
-const { Server } = require("socket.io");
-const cors = require("cors");
-const express = require("express");
-const http = require("http");
-const mongoose = require("mongoose");
-const router = require("./routes/user-routes.js");
-require("dotenv").config();
+const { Server } = require('socket.io');
+const cors = require('cors');
+const express = require('express');
+const http = require('http');
+const mongoose = require('mongoose');
+const router = require('./routes/user-routes.js');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(process.env.MONGO_URI, () => console.log("db connected"));
+mongoose.connect(process.env.MONGO_URI, () => console.log('db connected'));
 
 app.use(cors());
 app.use(express.json());
@@ -18,21 +18,21 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
+    origin: '*',
+    methods: ['GET', 'POST'],
   },
 });
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
   const id = socket.handshake.query.id;
   socket.join(id);
 
-  socket.on("send-message", ({ recipients, text }) => {
+  socket.on('send-message', ({ recipients, text }) => {
     recipients.forEach((recipient) => {
       const newRecipients = recipients.filter((r) => r !== recipient);
 
       newRecipients.push(id);
-      socket.broadcast.to(recipient).emit("receive-message", {
+      socket.broadcast.to(recipient).emit('receive-message', {
         recipients: newRecipients,
         sender: id,
         text,
@@ -41,4 +41,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => console.log("server"));
+server.listen(PORT, () => console.log('server'));

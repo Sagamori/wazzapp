@@ -7,32 +7,28 @@ export default function VerifyNumberModal({
   phone_number,
   username,
   onRedirection,
+  onNumber,
 }) {
   const codeRef = useRef();
-  console.log(id);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // console.log(id, codeRef);
-      console.log(id, ' sjdksdgbjk');
-      const a = await axios.post('http://localhost:5000/verify', {
+      console.log(id, ' juju');
+      await axios.post('http://localhost:5000/verify', {
         id,
         token: codeRef.current.value,
       });
 
-      console.log(phone_number, username);
-
-      const b = await axios.post('http://localhost:5000/registration', {
+      await axios.post('http://localhost:5000/registration', {
         phone_number,
         username,
       });
-      console.log(b);
-      onRedirection('dashboard');
+      onNumber(phone_number);
+      return onRedirection('dashboard');
     } catch (error) {
-      console.log('error');
       console.log(error);
-      console.log('till here');
     }
   };
 

@@ -1,5 +1,6 @@
+const Contact = require('../database/models/contact-model.js');
 const User = require('../database/models/user-model.js');
-const messagebird = require('messagebird')('lEpl5MyA1H9lgc9bvddZyQRMp');
+const messagebird = require('messagebird')('UrYOgshu9l1rym47H8dTuHRrr');
 
 const register = async (req, res) => {
   const { username, phone_number, password } = req.body;
@@ -36,7 +37,33 @@ const login = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-  res.json();
+  const { id: userId, phone_number } = req.body;
+  const user = await User.findOne({ phone_number });
+  if (!user) return ' no user';
+
+  const contact = {
+    phone_number,
+    username: user.username,
+  };
+
+  await Contact.updateOne(
+    { userId },
+    { $push: { contacts: contact } },
+    { upsert: true }
+  );
+
+  const { contacts } = await Contact.findOne({ userId });
+  const newContact = contacts.filter((e) => e.phone_number === phone_number);
+  console.log(newContact, ' new oine');
+  res.json(newContact);
+};
+
+const getContacts = async (req, res) => {
+  const { id: userId } = req.body;
+  console.log('dddddddd');
+  const contacts = await Contact.findOne({ userId });
+  console.log(contacts, ' in controller');
+  !contacts ? res.json([]) : res.json(contacts.contacts);
 };
 
 const sendCode = async (req, res) => {
@@ -48,7 +75,7 @@ const sendCode = async (req, res) => {
   messagebird.verify.create(
     number,
     {
-      originator: 'Miqela',
+      originator: 'wazzapp',
       template: 'Your verification code is %token.',
     },
     function (err, response) {
@@ -57,7 +84,7 @@ const sendCode = async (req, res) => {
         console.log(err);
       } else {
         res.json({ id: response.id });
-        console.log({ id: response.id });
+        console.log({ id: response });
       }
     }
   );
@@ -78,4 +105,4 @@ const verify = async (req, res) => {
   });
 };
 
-module.exports = { register, sendCode, verify, login, addContact };
+module.exports = { register, sendCode, verify, login, addContact, getContacts };

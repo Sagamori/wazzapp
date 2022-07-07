@@ -21,7 +21,7 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
       ) {
         onIdSubmit(data['_id']);
         onNumSubmit(numRef.current.value);
-        onRedirection('dashboard');
+        return onRedirection('dashboard');
       }
 
       throw new Error(data.message);
