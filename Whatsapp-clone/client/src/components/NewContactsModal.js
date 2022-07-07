@@ -3,14 +3,13 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { useContacts } from '../contexts/ContactsProvider';
 
 export default function NewContactsModal({ closeModal }) {
-  const idRef = useRef();
-  const nameRef = useRef();
+  const numRef = useRef();
   const { createContact } = useContacts();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    createContact(idRef.current.value, nameRef.current.value);
+    createContact(numRef.current.value);
     closeModal();
   }
 
@@ -20,15 +19,12 @@ export default function NewContactsModal({ closeModal }) {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group>
-            <Form.Label>Id</Form.Label>
-            <Form.Control type="text" ref={idRef} required />
+            <Form.Label>Phone Number</Form.Label>
+            <Form.Control type="text" ref={numRef} required />
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" ref={nameRef} required />
-          </Form.Group>
+
           <Button type="submit" className="mt-4">
-            Create
+            Add Contact
           </Button>
         </Form>
       </Modal.Body>
