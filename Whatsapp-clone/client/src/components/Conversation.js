@@ -4,7 +4,7 @@ import { useConversation } from '../contexts/ConversationProvider';
 
 export default function Conversation() {
   const { conversations, selectedConversationIndex } = useConversation();
-
+  console.log(conversations, ' conversations in sidbar');
   return (
     <ListGroup variant="flush">
       {conversations.map((conversation, index) => (
@@ -14,7 +14,12 @@ export default function Conversation() {
           onClick={() => selectedConversationIndex(index)}
           active={conversation.selected}
         >
-          {conversation.recipients.map((r) => r.name).join(', ')}
+          {conversation.recipients
+            .map((r) => {
+              console.log(r, 'user name in sidebar');
+              return r.username;
+            })
+            .join(', ')}
         </ListGroup.Item>
       ))}
     </ListGroup>

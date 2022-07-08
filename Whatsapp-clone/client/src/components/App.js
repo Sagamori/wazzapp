@@ -10,13 +10,12 @@ import useLocalStorage from '../hooks/localStorage';
 function App() {
   const [redirect, setRedirect] = useState('');
   const [number, setNumber] = useState('');
-  // const [id, setId] = useState('');
   const [id, setId] = useLocalStorage('id');
 
   const dashboard = (
     <SocketProvider id={id}>
       <ContactsProvider id={id}>
-        <ConversationProvider id={id} number={number}>
+        <ConversationProvider id={id} phone_number={number}>
           <Dashboard number={number} />
         </ConversationProvider>
       </ContactsProvider>

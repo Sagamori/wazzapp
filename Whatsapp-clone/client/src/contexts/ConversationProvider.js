@@ -9,14 +9,19 @@ export function useConversation() {
   return useContext(ConversationContexts);
 }
 
-export function ConversationProvider({ id, number, children }) {
+export function ConversationProvider({ id, phone_number, children }) {
   const [conversations, setConversations] = useState([]);
+  console.log(phone_number, ' num in conv prov');
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
   const { contacts } = useContacts();
 
   const createConversation = async (recipients) => {
+    console.log(recipients);
+    setConversations((prevConversations) => {
+      return [...prevConversations, { recipients, messages: [] }];
+    });
     const { data } = await axios.post(
       'http://localhost:5000/dashboard/conversation',
       {
@@ -24,9 +29,6 @@ export function ConversationProvider({ id, number, children }) {
         conversations,
       }
     );
-    setConversations((prevConversations) => {
-      return [...prevConversations, { recipients, messages: [] }];
-    });
   };
 
   const addMessageToConversation = useCallback(
@@ -66,28 +68,29 @@ export function ConversationProvider({ id, number, children }) {
   function sendMessage(recipients, text) {
     socket.emit('send-message', { recipients, text });
 
-    addMessageToConversation({ recipients, text, sender: number });
+    addMessageToConversation({ recipients, text, sender: phone_number });
   }
 
   const formattedConversations = conversations.map((conversation, index) => {
     const recipients = conversation.recipients.map((recipient) => {
       const contact = contacts.find((contact) => {
-        return contact.number === recipient;
+        console.log(contacts, ' contacts in formmatedtoconvers');
+        return contact.phone_number === recipient;
       });
 
-      const name = (contact && contact.name) || recipient;
-      return { number: recipient, name };
+      const username = (contact && contact.username) || recipient;
+      return { phone_number: recipient, username };
     });
 
     const messages = conversation.messages.map((message) => {
       const contact = contacts.find((contact) => {
-        return contact.number === message.sender;
+        return contact.phone_number === message.sender;
       });
 
-      const name = (contact && contact.name) || message.sender;
-      const fromMe = number === message.sender;
+      const username = (contact && contact.username) || message.sender;
+      const fromMe = phone_number === message.sender;
 
-      return { ...message, senderName: name, fromMe };
+      return { ...message, senderName: username, fromMe };
     });
 
     const selected = index === selectedConversationIndex;

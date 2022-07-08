@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 
-const MessageSchema = new mongoose.Schema(
+const ConversationSchema = new mongoose.Schema(
   {
     userId: { type: String },
     conversations: [
@@ -11,6 +11,6 @@ const MessageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Message = mongoose.model('Message', MessageSchema);
+const Conversation = mongoose.model('Conversation', ConversationSchema);
 
-module.exports = Message;
+module.exports = Conversation;

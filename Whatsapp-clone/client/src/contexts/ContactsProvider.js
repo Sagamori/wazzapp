@@ -11,10 +11,7 @@ export function ContactsProvider({ id, children }) {
   const [contacts, setContacts] = useState([]);
   const [stop, setStop] = useState(false);
 
-  console.log(contacts, ' well done son');
-
   useEffect(() => {
-    console.log(id, ' id effect');
     axios
       .post('http://localhost:5000/dashboard/myContacts', { id })
       .then(({ data }) => {
@@ -28,7 +25,6 @@ export function ContactsProvider({ id, children }) {
         'http://localhost:5000/dashboard/contacts',
         { id, phone_number }
       );
-      console.log(data, 'createcontect');
       setContacts((prevContacts) => {
         return [
           ...prevContacts,

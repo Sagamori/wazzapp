@@ -15,7 +15,6 @@ export default function VerifyNumberModal({
     e.preventDefault();
 
     try {
-      console.log(id, ' juju');
       await axios.post('http://localhost:5000/verify', {
         id,
         token: codeRef.current.value,

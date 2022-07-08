@@ -14,7 +14,6 @@ export default function RegistrationForm({ onRedirection, onNumber }) {
       const { data } = await axios.post('http://localhost:5000/sendCode', {
         number: numRef.current.value,
       });
-      console.log(data.id, ' hehehe ');
       setId(data.id);
     } catch (error) {
       console.log(error);
