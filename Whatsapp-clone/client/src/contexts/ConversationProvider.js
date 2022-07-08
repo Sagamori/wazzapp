@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useCallback, useContext, useState, useEffect } from 'react';
-import { useContacts } from './ContactsProvider';
-import { useSocket } from './SocketProvider';
+import axios from "axios";
+import React, { useCallback, useContext, useState, useEffect } from "react";
+import { useContacts } from "./ContactsProvider";
+import { useSocket } from "./SocketProvider";
 
 // Context provides a way to pass data through the component tree without having to pass props down manually at every level.
 const ConversationContexts = React.createContext();
@@ -15,18 +15,25 @@ export function ConversationProvider({ id, number, children }) {
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
   const { contacts } = useContacts();
+  console.log(conversations, "con provider");
 
   const createConversation = async (recipients) => {
-    const { data } = await axios.post(
-      'http://localhost:5000/dashboard/conversation',
-      {
-        id,
-        conversations,
-      }
-    );
-    setConversations((prevConversations) => {
-      return [...prevConversations, { recipients, messages: [] }];
-    });
+    try {
+      console.log("es");
+      const { data } = await axios.post(
+        "http://localhost:5000/dashboard/conversation",
+        {
+          id,
+          conversations,
+        }
+      );
+      console.log(data, "gadawurvaaaa");
+      setConversations((prevConversations) => {
+        return [...prevConversations, { recipients, messages: [] }];
+      });
+    } catch (error) {
+      console.log(error, "createconnnn");
+    }
   };
 
   const addMessageToConversation = useCallback(
@@ -58,13 +65,13 @@ export function ConversationProvider({ id, number, children }) {
 
   useEffect(() => {
     if (socket == null) return;
-    socket.on('receive-message', addMessageToConversation);
+    socket.on("receive-message", addMessageToConversation);
 
-    return () => socket.off('receive-message');
+    return () => socket.off("receive-message");
   }, [socket, addMessageToConversation]);
 
   function sendMessage(recipients, text) {
-    socket.emit('send-message', { recipients, text });
+    socket.emit("send-message", { recipients, text });
 
     addMessageToConversation({ recipients, text, sender: number });
   }
