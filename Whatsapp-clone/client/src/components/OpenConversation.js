@@ -9,23 +9,24 @@ export default function OpenConversation({}) {
       node.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
+
   const { sendMessage, selectedConversation } = useConversation();
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
     sendMessage(
-      selectedConversation.recipients.map((r) => r.id),
+      selectedConversation.recipients.map((r) => r.contactId),
       text,
       setText('')
     );
-  }
+  };
 
   return (
     <div className="d-flex flex-column flex-grow-1">
       <div className="flex-grow-1 overflow-auto">
         <div className="d-flex flex-column align-items-start justify-content-end pc-3">
           {selectedConversation.messages.map((message, index) => {
+            console.log(message, ' message in div');
             const lastMessage =
               selectedConversation.messages.length - 1 === index;
 

@@ -11,29 +11,26 @@ export function useConversation() {
 
 export function ConversationProvider({ id, phone_number, children }) {
   const [conversations, setConversations] = useState([]);
-  console.log(phone_number, ' num in conv prov');
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
   const { contacts } = useContacts();
-  console.log(conversations, 'con provider');
 
   const createConversation = async (recipients) => {
     try {
-      console.log('es');
       const { data } = await axios.post(
         'http://localhost:5000/dashboard/conversation',
         {
           id,
-          conversations,
+          recipients,
         }
       );
-      console.log(data, 'gadawurvaaaa');
+
       setConversations((prevConversations) => {
         return [...prevConversations, { recipients, messages: [] }];
       });
     } catch (error) {
-      console.log(error, 'createconnnn');
+      console.log(error);
     }
   };
 
@@ -44,6 +41,7 @@ export function ConversationProvider({ id, phone_number, children }) {
         const newMessage = { sender, text };
 
         const newConversations = prevConversations.map((conversation) => {
+          console.log(conversation, '  conversation in action');
           if (arrayEquality(conversation.recipients, recipients)) {
             madeChange = true;
             return {
@@ -71,33 +69,46 @@ export function ConversationProvider({ id, phone_number, children }) {
     return () => socket.off('receive-message');
   }, [socket, addMessageToConversation]);
 
-  function sendMessage(recipients, text) {
-    socket.emit('send-message', { recipients, text });
+  console.log(id, ' id vvvvv');
 
-    addMessageToConversation({ recipients, text, sender: phone_number });
+  function sendMessage(recipients, text) {
+    console.log(recipients, ' recipient in socket emit');
+    console.log(text, ' text in socket emit');
+    socket.emit('send-message', { recipients, text });
+    addMessageToConversation({ recipients, text, sender: id });
   }
 
   const formattedConversations = conversations.map((conversation, index) => {
+    console.log(conversation, '  conversation');
     const recipients = conversation.recipients.map((recipient) => {
       const contact = contacts.find((contact) => {
-        console.log(contacts, ' contacts in formmatedtoconvers');
-        return contact.phone_number === recipient;
+        console.log(recipient, ' recipient formatted');
+        console.log(contact, ' contacts in formatted');
+        return contact.contactId === recipient;
       });
 
       const username = (contact && contact.username) || recipient;
-      return { phone_number: recipient, username };
+      return { contactId: recipient, username };
     });
+    console.log(recipients, ' recipients after find');
 
     const messages = conversation.messages.map((message) => {
       const contact = contacts.find((contact) => {
-        return contact.phone_number === message.sender;
+        console.log(id, ' a batono');
+        console.log(contact, ' conk');
+        console.log(message, ' message');
+        return id === message.sender;
       });
+      console.log(contact, ' contact jjj');
 
       const username = (contact && contact.username) || message.sender;
-      const fromMe = phone_number === message.sender;
+      const fromMe = id === message.sender;
+      console.log(username, ' swerererrfvgvjhvjgvjgv');
 
       return { ...message, senderName: username, fromMe };
     });
+
+    console.log(messages, ' esaaa is?');
 
     const selected = index === selectedConversationIndex;
     return { ...conversation, messages, recipients, selected };

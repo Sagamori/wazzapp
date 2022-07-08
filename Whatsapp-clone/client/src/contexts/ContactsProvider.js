@@ -25,12 +25,19 @@ export function ContactsProvider({ id, children }) {
         'http://localhost:5000/dashboard/contacts',
         { id, phone_number }
       );
+
       setContacts((prevContacts) => {
         return [
           ...prevContacts,
-          { phone_number, username: data[0].username, _id: data[0]._id },
+          {
+            phone_number,
+            username: data[0].username,
+            _id: data[0]._id,
+            contactId: data.contactId,
+          },
         ];
       });
+      setStop(true);
     } catch (error) {
       console.log(error);
     }
