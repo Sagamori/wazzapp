@@ -16,19 +16,25 @@ export function ConversationProvider({ id, phone_number, children }) {
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
   const { contacts } = useContacts();
+  console.log(conversations, 'con provider');
 
   const createConversation = async (recipients) => {
-    console.log(recipients);
-    setConversations((prevConversations) => {
-      return [...prevConversations, { recipients, messages: [] }];
-    });
-    const { data } = await axios.post(
-      'http://localhost:5000/dashboard/conversation',
-      {
-        id,
-        conversations,
-      }
-    );
+    try {
+      console.log('es');
+      const { data } = await axios.post(
+        'http://localhost:5000/dashboard/conversation',
+        {
+          id,
+          conversations,
+        }
+      );
+      console.log(data, 'gadawurvaaaa');
+      setConversations((prevConversations) => {
+        return [...prevConversations, { recipients, messages: [] }];
+      });
+    } catch (error) {
+      console.log(error, 'createconnnn');
+    }
   };
 
   const addMessageToConversation = useCallback(
