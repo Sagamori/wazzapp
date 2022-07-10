@@ -9,12 +9,12 @@ export function useConversation() {
   return useContext(ConversationContexts);
 }
 
-export function ConversationProvider({ id, phone_number, children }) {
+export function ConversationProvider({ id, children }) {
   const [conversations, setConversations] = useState([]);
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
-  const { contacts } = useContacts();
+  const { contacts, number } = useContacts();
 
   const createConversation = async (recipients) => {
     try {
@@ -82,8 +82,6 @@ export function ConversationProvider({ id, phone_number, children }) {
     console.log(conversation, '  conversation');
     const recipients = conversation.recipients.map((recipient) => {
       const contact = contacts.find((contact) => {
-        console.log(recipient, ' recipient formatted');
-        console.log(contact, ' contacts in formatted');
         return contact.contactId === recipient;
       });
 
@@ -94,25 +92,18 @@ export function ConversationProvider({ id, phone_number, children }) {
 
     const messages = conversation.messages.map((message) => {
       const contact = contacts.find((contact) => {
-        console.log(id, ' a batono');
-        console.log(contact, ' conk');
-        console.log(message, ' message');
-        return id === message.sender;
+        return contact.contactId === message.sender;
       });
-      console.log(contact, ' contact jjj');
-
       const username = (contact && contact.username) || message.sender;
       const fromMe = id === message.sender;
-      console.log(username, ' swerererrfvgvjhvjgvjgv');
-
       return { ...message, senderName: username, fromMe };
     });
-
-    console.log(messages, ' esaaa is?');
 
     const selected = index === selectedConversationIndex;
     return { ...conversation, messages, recipients, selected };
   });
+
+  // console.log(formattedConversations, ' ++formattedConversations');
 
   // Object will be Passed as data into ConversationContext
   const value = {

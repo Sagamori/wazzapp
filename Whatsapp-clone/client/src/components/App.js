@@ -9,44 +9,34 @@ import useLocalStorage from '../hooks/localStorage';
 
 function App() {
   const [redirect, setRedirect] = useState('');
-  const [number, setNumber] = useState('');
   const [id, setId] = useLocalStorage('id');
 
   const dashboard = (
     <SocketProvider id={id}>
       <ContactsProvider id={id}>
-        <ConversationProvider id={id} phone_number={number}>
-          <Dashboard number={number} />
+        <ConversationProvider id={id}>
+          <Dashboard />
         </ConversationProvider>
       </ContactsProvider>
     </SocketProvider>
   );
 
   if (redirect === 'login') {
-    return (
-      <Login
-        onNumSubmit={setNumber}
-        onIdSubmit={setId}
-        onRedirection={setRedirect}
-      />
-    );
+    return <Login onIdSubmit={setId} onRedirection={setRedirect} />;
   }
+
   if (redirect === 'registration') {
-    return (
-      <RegistrationForm onRedirection={setRedirect} onNumber={setNumber} />
-    );
+    return <RegistrationForm onRedirection={setRedirect} />;
   }
+
   if (redirect === 'dashboard') {
     return dashboard;
   }
+
   return id ? (
     dashboard
   ) : (
-    <Login
-      onNumSubmit={setNumber}
-      onIdSubmit={setId}
-      onRedirection={setRedirect}
-    />
+    <Login onIdSubmit={setId} onRedirection={setRedirect} />
   );
 }
 

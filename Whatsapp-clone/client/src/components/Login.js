@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
+import { useContacts } from '../contexts/ContactsProvider';
 
-export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
+export default function Login({ onIdSubmit, onRedirection }) {
   const numRef = useRef();
   const usernameRef = useRef();
 
@@ -18,8 +19,6 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
         data.message !== "User doesn't exists!!!" &&
         data.message !== 'Invalid Credentials!!!'
       ) {
-        // onIdSubmit(data['_id']);
-        onNumSubmit(numRef.current.value);
         onIdSubmit(data['_id']);
         return onRedirection('dashboard');
       }
@@ -37,7 +36,7 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
 
   return (
     <Container
-      className="align-items-center d-flex justify-content-center"
+      className="bg-success align-items-center d-flex justify-content-center"
       style={{ height: '100vh' }}
     >
       <Form className="w-50" onSubmit={handleSubmit}>

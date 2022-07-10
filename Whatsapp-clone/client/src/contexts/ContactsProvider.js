@@ -8,8 +8,17 @@ export function useContacts() {
 }
 
 export function ContactsProvider({ id, children }) {
+  const [number, setNumber] = useState();
   const [contacts, setContacts] = useState([]);
   const [stop, setStop] = useState(false);
+
+  useEffect(() => {
+    axios
+      .post('http://localhost:5000/login/profile', { id })
+      .then(({ data }) => {
+        setNumber(data.phone_number);
+      });
+  }, [stop]);
 
   useEffect(() => {
     axios
@@ -44,7 +53,7 @@ export function ContactsProvider({ id, children }) {
   };
 
   return (
-    <ContactsContexts.Provider value={{ contacts, createContact }}>
+    <ContactsContexts.Provider value={{ number, contacts, createContact }}>
       {children}
     </ContactsContexts.Provider>
   );
