@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Form, InputGroup } from 'react-bootstrap';
-import { useConversation } from '../contexts/ConversationProvider';
+import React, { useCallback, useState } from "react";
+import { Button, Form, InputGroup } from "react-bootstrap";
+import { useConversation } from "../contexts/ConversationProvider";
 
 export default function OpenConversation({}) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const setRef = useCallback((node) => {
     if (node) {
-      node.scrollIntoView({ behavior: 'smooth' });
+      node.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
 
@@ -20,7 +20,7 @@ export default function OpenConversation({}) {
         return r.contactId;
       }),
       text,
-      setText('')
+      setText("")
     );
   };
 
@@ -29,7 +29,7 @@ export default function OpenConversation({}) {
       <div className="flex-grow-1 overflow-auto">
         <div className="d-flex flex-column align-items-start justify-content-end pc-3">
           {selectedConversation.messages.map((message, index) => {
-            // console.log(message, ' message metqi');
+            console.log(message, ' message metqi');
             const lastMessage =
               selectedConversation.messages.length - 1 === index;
 
@@ -39,23 +39,23 @@ export default function OpenConversation({}) {
                 key={index}
                 className={`my-1 mx-2 d-flex flex-column ${
                   message.fromMe
-                    ? 'align-self-end align-items-end'
-                    : 'align-items-start'
+                    ? "align-self-end align-items-end"
+                    : "align-items-start"
                 }`}
               >
                 <div
                   className={`rounded px-5 py-1 ${
-                    message.fromMe ? 'bg-primary text-white' : 'border'
+                    message.fromMe ? "bg-primary text-white" : "border"
                   }`}
                 >
                   {message.text}
                 </div>
                 <div
                   className={`small text-info ${
-                    message.fromMe ? 'text-left' : ''
+                    message.fromMe ? "text-left" : ""
                   } `}
                 >
-                  {message.fromMe ? 'You' : message.senderName}
+                  {message.fromMe ? "You" : message.senderName}
                 </div>
               </div>
             );
@@ -70,7 +70,7 @@ export default function OpenConversation({}) {
               required
               value={text}
               onChange={(e) => setText(e.target.value)}
-              style={{ height: '75px', resize: 'none' }}
+              style={{ height: "75px", resize: "none" }}
             />
             <Button type="submit">Send</Button>
           </InputGroup>

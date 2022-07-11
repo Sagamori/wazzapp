@@ -1,38 +1,39 @@
-import axios from 'axios';
-import React, { useRef } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
-import CryptoJS from 'crypto-js';
+import axios from "axios";
+import React, { useRef } from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import CryptoJS from "crypto-js";
 
 const encryptText = (text) => {
   console.log(process.env.SECRET_KEY);
   const encryptedText = CryptoJS.AES.encrypt(
     text,
-    'process.env.SECRET_KEY'
+    "process.env.SECRET_KEY"
   ).toString();
-  console.log(encryptedText, ' encryptedText');
+  console.log(encryptedText, " encryptedText");
 
   return { encryptedText };
 };
 
-export default function Login({ onIdSubmit, onRedirection }) {
+export default function Login({ onIdSubmit, onNumberSubmit, onRedirection }) {
   const numRef = useRef();
   const usernameRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:5000/login', {
+      const { data } = await axios.post("http://localhost:5000/login", {
         phone_number: numRef.current.value,
         username: usernameRef.current.value,
       });
 
       if (
         data.message !== "User doesn't exists!!!" &&
-        data.message !== 'Invalid Credentials!!!'
+        data.message !== "Invalid Credentials!!!"
       ) {
-        const { encryptedText: loginId } = encryptText(data['_id']);
+        const { encryptedText: loginId } = encryptText(data["_id"]);
         onIdSubmit(loginId);
-        return onRedirection('dashboard');
+        onNumberSubmit(numRef.current.value);
+        return onRedirection("dashboard");
       }
 
       throw new Error(data.message);
@@ -43,13 +44,13 @@ export default function Login({ onIdSubmit, onRedirection }) {
 
   const registerRequest = (e) => {
     e.preventDefault();
-    onRedirection('registration');
+    onRedirection("registration");
   };
 
   return (
     <Container
       className="bg-success align-items-center d-flex justify-content-center"
-      style={{ height: '100vh' }}
+      style={{ height: "100vh" }}
     >
       <Form className="w-50" onSubmit={handleSubmit}>
         <Form.Group>

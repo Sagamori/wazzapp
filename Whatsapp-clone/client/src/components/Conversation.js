@@ -1,9 +1,10 @@
-import React from 'react';
-import { ListGroup } from 'react-bootstrap';
-import { useConversation } from '../contexts/ConversationProvider';
+import React from "react";
+import { ListGroup } from "react-bootstrap";
+import { useConversation } from "../contexts/ConversationProvider";
 
 export default function Conversation() {
   const { conversations, selectedConversationIndex } = useConversation();
+  console.log(conversations, "aha conversationshiiiii");
   return (
     <ListGroup variant="flush">
       {conversations.map((conversation, index) => (
@@ -17,7 +18,7 @@ export default function Conversation() {
             .map((r) => {
               return r.username;
             })
-            .join(', ')}
+            .join(", ")}
         </ListGroup.Item>
       ))}
     </ListGroup>
