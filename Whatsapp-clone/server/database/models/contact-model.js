@@ -8,6 +8,7 @@ const ContactSchema = new mongoose.Schema(
       {
         phone_number: { type: String },
         username: { type: String },
+        contactId: { type: String },
       },
     ],
   },

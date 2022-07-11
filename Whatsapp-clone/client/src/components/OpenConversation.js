@@ -9,23 +9,27 @@ export default function OpenConversation({}) {
       node.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
+
   const { sendMessage, selectedConversation } = useConversation();
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
     sendMessage(
-      selectedConversation.recipients.map((r) => r.id),
+      selectedConversation.recipients.map((r) => {
+        console.log(r);
+        return r.contactId;
+      }),
       text,
       setText('')
     );
-  }
+  };
 
   return (
     <div className="d-flex flex-column flex-grow-1">
       <div className="flex-grow-1 overflow-auto">
         <div className="d-flex flex-column align-items-start justify-content-end pc-3">
           {selectedConversation.messages.map((message, index) => {
+            // console.log(message, ' message metqi');
             const lastMessage =
               selectedConversation.messages.length - 1 === index;
 
@@ -47,7 +51,7 @@ export default function OpenConversation({}) {
                   {message.text}
                 </div>
                 <div
-                  className={`text-muted small ${
+                  className={`small text-info ${
                     message.fromMe ? 'text-left' : ''
                   } `}
                 >

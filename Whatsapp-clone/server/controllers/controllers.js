@@ -1,10 +1,20 @@
-const Contact = require("../database/models/contact-model.js");
-const Conversation = require("../database/models/conversation-model.js");
-const User = require("../database/models/user-model.js");
-const messagebird = require("messagebird")("UrYOgshu9l1rym47H8dTuHRrr");
+const Contact = require('../database/models/contact-model.js');
+const User = require('../database/models/user-model.js');
+const messagebird = require('messagebird')('QbAoTrUposNZOFDz6E0i2sVfJ');
+
+const getUserData = async (req, res) => {
+  const { id: userId } = req.body;
+  const user = await User.findOne({ _id: userId }).select([
+    'username',
+    'phone_number',
+  ]);
+  console.log(user, ' selected');
+  res.json(user);
+};
 
 const register = async (req, res) => {
   const { username, phone_number, password } = req.body;
+  console.log(username, phone_number);
 
   try {
     await User.create({
@@ -12,15 +22,17 @@ const register = async (req, res) => {
       phone_number,
       password,
     });
-    res.json({ msg: "Registration Successful" });
-  } catch (error) {}
+    res.json({ msg: 'Registration Successful' });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const login = async (req, res) => {
   const { username, phone_number } = req.body;
   const [user] = await User.find({
     $or: [{ phone_number }, { username }],
-  }).select(["username", "phone_number"]);
+  }).select(['username', 'phone_number']);
 
   if (!user) {
     return res.json({ message: "User doesn't exists!!!" });
@@ -31,17 +43,18 @@ const login = async (req, res) => {
   ) {
     return res.json(user);
   }
-  res.json({ message: "Invalid Credentials!!!" });
+  res.json({ message: 'Invalid Credentials!!!' });
 };
 
 const addContact = async (req, res) => {
   const { id: userId, phone_number } = req.body;
   const user = await User.findOne({ phone_number });
-  if (!user) return " no user";
+  if (!user) return ' no user';
 
   const contact = {
     phone_number,
     username: user.username,
+    contactId: user._id,
   };
 
   await Contact.updateOne(
@@ -52,6 +65,7 @@ const addContact = async (req, res) => {
 
   const { contacts } = await Contact.findOne({ userId });
   const newContact = contacts.filter((e) => e.phone_number === phone_number);
+  console.log(newContact, ' new oine');
   res.json(newContact);
 };
 
@@ -61,17 +75,23 @@ const getContacts = async (req, res) => {
   !contacts ? res.json([]) : res.json(contacts.contacts);
 };
 
-const addConversation = async (req, res) => { 
+const addConversation = async (req, res) => {
   const { id: userId, recipients } = req.body;
   let recipient = [];
-
-  recipients.forEach(async (e) => {
-    console.log(e);
-    const eachRecipient = await User.findOne({ e });
+  // recipients.forEach(async (e) => {
+  //   const eachRecipient = await User.findOne({ _id: e });
+  //   recipient.push(eachRecipient);
+  // });
+  for (const item of recipients) {
+    const eachRecipient = await User.findOne({ _id: item });
     recipient.push(eachRecipient);
-  });
+  }
 
-  // const user = await User.findOne({ phone_number });
+  console.log(recipient);
+
+  // const { conversations: conversation } = await Conversation.findOne({
+  //   userId,
+  // });
 
   // await Conversation.updateOne(
   //   { userId },
@@ -79,27 +99,30 @@ const addConversation = async (req, res) => {
   //   { upsert: true }
   // );
 
-  // const { conversations: conversation } = await Conversation.findOne({
-  //   userId,
-  // });
-
+  // console.log(conversation, "esss");
+  // res.json(conversation);
   res.json(recipient);
 };
 
 const sendCode = async (req, res) => {
+  console.log(req.body, 'body in server sendCode function');
+
   const { number } = req.body;
+  console.log(number);
 
   messagebird.verify.create(
     number,
     {
-      originator: "wazzapp",
-      template: "Your verification code is %token.",
+      originator: 'wazzapp',
+      template: 'Your verification code is %token.',
     },
     function (err, response) {
       if (err) {
         res.json({ error: err.errors[0].description });
+        console.log(err);
       } else {
         res.json({ id: response.id });
+        console.log({ id: response });
       }
     }
   );
@@ -112,8 +135,10 @@ const verify = async (req, res) => {
   messagebird.verify.verify(id, token, (err, response) => {
     if (err) {
       res.json({ error: err.errors[0].description, id });
+      console.log(err);
     } else {
       res.json(response);
+      console.log(response);
     }
   });
 };
@@ -126,4 +151,5 @@ module.exports = {
   addContact,
   getContacts,
   addConversation,
+  getUserData,
 };

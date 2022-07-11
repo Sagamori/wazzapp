@@ -1,28 +1,30 @@
-import React, { useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
-import { useContacts } from "../contexts/ContactsProvider";
-import { useConversation } from "../contexts/ConversationProvider";
+import React, { useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { useContacts } from '../contexts/ContactsProvider';
+import { useConversation } from '../contexts/ConversationProvider';
 
 export default function NewConversationModal({ closeModal }) {
-  const [selectedContactUsernames, setSelectedContactUsernames] = useState([]);
+  const [selectedContactId, setSelectedContactId] = useState([]);
+
   const { contacts } = useContacts();
   const { createConversation } = useConversation();
-
+  console.log(contacts, ' wesit');
   function handleSubmit(e) {
     e.preventDefault();
 
-    createConversation(selectedContactUsernames);
+    createConversation(selectedContactId);
     closeModal();
   }
 
-  function handleCheckboxChange(contactUsername) {
-    setSelectedContactUsernames((prevSelectedContactUsernames) => {
-      if (prevSelectedContactUsernames.includes(contactUsername)) {
-        return prevSelectedContactUsernames.filter((prevUsername) => {
-          return contactUsername !== prevUsername;
+  function handleCheckboxChange(contactId) {
+    console.log(contactId, ' id first');
+    setSelectedContactId((prevSelectedContactId) => {
+      if (prevSelectedContactId.includes(contactId)) {
+        return prevSelectedContactId.filter((prevId) => {
+          return contactId !== prevId;
         });
       } else {
-        return [...prevSelectedContactUsernames, contactUsername];
+        return [...prevSelectedContactId, contactId];
       }
     });
   }
@@ -32,16 +34,19 @@ export default function NewConversationModal({ closeModal }) {
       <Modal.Header closeButton>Create Conversation</Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          {contacts.map((contact) => (
-            <Form.Group controlId={contact._id} key={contact._id}>
-              <Form.Check
-                type="checkbox"
-                value={selectedContactUsernames.includes(contact.username)}
-                label={contact.username}
-                onChange={() => handleCheckboxChange(contact.username)}
-              />
-            </Form.Group>
-          ))}
+          {contacts.map((contact) => {
+            console.log(contact, ' in map modal conversation');
+            return (
+              <Form.Group controlId={contact._id} key={contact._id}>
+                <Form.Check
+                  type="checkbox"
+                  value={selectedContactId.includes(contact.contactId)}
+                  label={contact.username}
+                  onChange={() => handleCheckboxChange(contact.contactId)}
+                />
+              </Form.Group>
+            );
+          })}
 
           <Button type="submit">Create</Button>
         </Form>

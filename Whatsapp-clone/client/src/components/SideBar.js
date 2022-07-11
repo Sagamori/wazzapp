@@ -18,7 +18,7 @@ export default function SideBar({ number }) {
   }
 
   return (
-    <div style={{ width: '250px' }} className="d-flex flex-column">
+    <div style={{ width: '250px' }} className="d-flex flex-column bg-success">
       <Tab.Container activeKey={activeKey} onSelect={setActiveKey}>
         <Nav variant="tabs" className="justify-content-center">
           <Nav.Item>
@@ -41,7 +41,7 @@ export default function SideBar({ number }) {
           </Tab.Pane>
         </Tab.Content>
         <div className="p-2 border-top border-end small">
-          Your Phone Number: <span className="text-muted">{number}</span>
+          Your Phone Number: <span className="text-warning">{number}</span>
           <Button
             onClick={() => setModalOpen(true)}
             className="rounded-0 w-100"
