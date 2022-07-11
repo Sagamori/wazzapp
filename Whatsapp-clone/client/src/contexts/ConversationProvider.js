@@ -99,11 +99,9 @@ export function ConversationProvider({ id, phone_number, children }) {
         console.log(message, ' message');
         return id === message.sender;
       });
-      console.log(contact, ' contact jjj');
 
       const username = (contact && contact.username) || message.sender;
       const fromMe = id === message.sender;
-      console.log(username, ' swerererrfvgvjhvjgvjgv');
 
       return { ...message, senderName: username, fromMe };
     });
