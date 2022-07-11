@@ -103,9 +103,6 @@ export function ConversationProvider({ id, children }) {
     return { ...conversation, messages, recipients, selected };
   });
 
-  // console.log(formattedConversations, ' ++formattedConversations');
-
-  // Object will be Passed as data into ConversationContext
   const value = {
     conversations: formattedConversations,
     selectedConversation: formattedConversations[selectedConversationIndex],

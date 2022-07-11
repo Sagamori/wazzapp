@@ -1,7 +1,6 @@
 const Contact = require('../database/models/contact-model.js');
-const Conversation = require('../database/models/conversation-model.js');
 const User = require('../database/models/user-model.js');
-const messagebird = require('messagebird')('UrYOgshu9l1rym47H8dTuHRrr');
+const messagebird = require('messagebird')('QbAoTrUposNZOFDz6E0i2sVfJ');
 
 const getUserData = async (req, res) => {
   const { id: userId } = req.body;

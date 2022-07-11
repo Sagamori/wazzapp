@@ -1,7 +1,18 @@
 import axios from 'axios';
 import React, { useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
-import { useContacts } from '../contexts/ContactsProvider';
+import CryptoJS from 'crypto-js';
+
+const encryptText = (text) => {
+  console.log(process.env.SECRET_KEY);
+  const encryptedText = CryptoJS.AES.encrypt(
+    text,
+    'process.env.SECRET_KEY'
+  ).toString();
+  console.log(encryptedText, ' encryptedText');
+
+  return { encryptedText };
+};
 
 export default function Login({ onIdSubmit, onRedirection }) {
   const numRef = useRef();
@@ -19,7 +30,8 @@ export default function Login({ onIdSubmit, onRedirection }) {
         data.message !== "User doesn't exists!!!" &&
         data.message !== 'Invalid Credentials!!!'
       ) {
-        onIdSubmit(data['_id']);
+        const { encryptedText: loginId } = encryptText(data['_id']);
+        onIdSubmit(loginId);
         return onRedirection('dashboard');
       }
 
