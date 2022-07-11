@@ -1,6 +1,6 @@
-import axios from 'axios';
-import React, { useRef } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import axios from "axios";
+import React, { useRef } from "react";
+import { Button, Container, Form } from "react-bootstrap";
 
 export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
   const numRef = useRef();
@@ -9,22 +9,19 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('before axios login');
-      const { data } = await axios.post('http://localhost:5000/login', {
+      const { data } = await axios.post("http://localhost:5000/login", {
         phone_number: numRef.current.value,
         username: usernameRef.current.value,
       });
 
       if (
         data.message !== "User doesn't exists!!!" &&
-        data.message !== 'Invalid Credentials!!!'
+        data.message !== "Invalid Credentials!!!"
       ) {
-        onIdSubmit(data['_id']);
+        onIdSubmit(data["_id"]);
         onNumSubmit(numRef.current.value);
-        return onRedirection('dashboard');
+        return onRedirection("dashboard");
       }
-
-      throw new Error(data.message);
     } catch (error) {
       console.log(error);
     }
@@ -32,13 +29,13 @@ export default function Login({ onNumSubmit, onIdSubmit, onRedirection }) {
 
   const registerRequest = (e) => {
     e.preventDefault();
-    onRedirection('registration');
+    onRedirection("registration");
   };
 
   return (
     <Container
       className="align-items-center d-flex justify-content-center"
-      style={{ height: '100vh' }}
+      style={{ height: "100vh" }}
     >
       <Form className="w-50" onSubmit={handleSubmit}>
         <Form.Group>

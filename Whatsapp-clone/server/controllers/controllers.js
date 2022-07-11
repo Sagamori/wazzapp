@@ -5,7 +5,6 @@ const messagebird = require("messagebird")("UrYOgshu9l1rym47H8dTuHRrr");
 
 const register = async (req, res) => {
   const { username, phone_number, password } = req.body;
-  console.log(username, phone_number);
 
   try {
     await User.create({
@@ -14,9 +13,7 @@ const register = async (req, res) => {
       password,
     });
     res.json({ msg: "Registration Successful" });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 const login = async (req, res) => {
@@ -55,7 +52,6 @@ const addContact = async (req, res) => {
 
   const { contacts } = await Contact.findOne({ userId });
   const newContact = contacts.filter((e) => e.phone_number === phone_number);
-  console.log(newContact, " new oine");
   res.json(newContact);
 };
 
@@ -65,29 +61,33 @@ const getContacts = async (req, res) => {
   !contacts ? res.json([]) : res.json(contacts.contacts);
 };
 
-const addConversation = async (req, res) => {
-  const { id: userId, conversations } = req.body;
-  console.log(userId, conversations);
+const addConversation = async (req, res) => { 
+  const { id: userId, recipients } = req.body;
+  let recipient = [];
 
-  await Conversation.updateOne(
-    { userId },
-    { $push: { conversations } },
-    { upsert: true }
-  );
-
-  const { conversations: conversation } = await Conversation.findOne({
-    userId,
+  recipients.forEach(async (e) => {
+    console.log(e);
+    const eachRecipient = await User.findOne({ e });
+    recipient.push(eachRecipient);
   });
 
-  console.log(conversation, "esss");
-  res.json(conversation);
+  // const user = await User.findOne({ phone_number });
+
+  // await Conversation.updateOne(
+  //   { userId },
+  //   { $push: { conversations } },
+  //   { upsert: true }
+  // );
+
+  // const { conversations: conversation } = await Conversation.findOne({
+  //   userId,
+  // });
+
+  res.json(recipient);
 };
 
 const sendCode = async (req, res) => {
-  console.log(req.body, "body in server sendCode function");
-
   const { number } = req.body;
-  console.log(number);
 
   messagebird.verify.create(
     number,
@@ -98,10 +98,8 @@ const sendCode = async (req, res) => {
     function (err, response) {
       if (err) {
         res.json({ error: err.errors[0].description });
-        console.log(err);
       } else {
         res.json({ id: response.id });
-        console.log({ id: response });
       }
     }
   );
@@ -114,10 +112,8 @@ const verify = async (req, res) => {
   messagebird.verify.verify(id, token, (err, response) => {
     if (err) {
       res.json({ error: err.errors[0].description, id });
-      console.log(err);
     } else {
       res.json(response);
-      console.log(response);
     }
   });
 };

@@ -5,7 +5,6 @@ import { useConversation } from "../contexts/ConversationProvider";
 
 export default function NewConversationModal({ closeModal }) {
   const [selectedContactUsernames, setSelectedContactUsernames] = useState([]);
-  console.log(selectedContactUsernames, "moda con");
   const { contacts } = useContacts();
   const { createConversation } = useConversation();
 
@@ -33,19 +32,16 @@ export default function NewConversationModal({ closeModal }) {
       <Modal.Header closeButton>Create Conversation</Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          {contacts.map((contact) => {
-            console.log(contact, "modaliiiiiiiiiiiii");
-            return (
-              <Form.Group controlId={contact._id} key={contact._id}>
-                <Form.Check
-                  type="checkbox"
-                  value={selectedContactUsernames.includes(contact.username)}
-                  label={contact.username}
-                  onChange={() => handleCheckboxChange(contact.username)}
-                />
-              </Form.Group>
-            );
-          })}
+          {contacts.map((contact) => (
+            <Form.Group controlId={contact._id} key={contact._id}>
+              <Form.Check
+                type="checkbox"
+                value={selectedContactUsernames.includes(contact.username)}
+                label={contact.username}
+                onChange={() => handleCheckboxChange(contact.username)}
+              />
+            </Form.Group>
+          ))}
 
           <Button type="submit">Create</Button>
         </Form>

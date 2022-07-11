@@ -15,19 +15,18 @@ export function ConversationProvider({ id, number, children }) {
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
   const { contacts } = useContacts();
-  console.log(conversations, "con provider");
 
   const createConversation = async (recipients) => {
     try {
-      console.log("es");
       const { data } = await axios.post(
         "http://localhost:5000/dashboard/conversation",
         {
           id,
-          conversations,
+          recipients,
         }
       );
-      console.log(data, "gadawurvaaaa");
+
+      console.log(data, "data in conversationProvider");
       setConversations((prevConversations) => {
         return [...prevConversations, { recipients, messages: [] }];
       });
