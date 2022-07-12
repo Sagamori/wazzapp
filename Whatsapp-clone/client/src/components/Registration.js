@@ -3,7 +3,7 @@ import axios from "axios";
 import { Button, Container, Form, Modal } from "react-bootstrap";
 import VerifyNumberModal from "./VerifyNumberModal";
 
-export default function RegistrationForm({ onRedirection, onNumber, onId }) {
+const RegistrationForm = ({ onRedirection, onNumber, onId }) => {
   const [tokenId, setTokenId] = useState();
   const numRef = useRef();
   const usernameRef = useRef();
@@ -65,4 +65,6 @@ export default function RegistrationForm({ onRedirection, onNumber, onId }) {
       </Container>
     </>
   );
-}
+};
+
+export default RegistrationForm;

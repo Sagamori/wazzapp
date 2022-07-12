@@ -1,20 +1,9 @@
 import axios from "axios";
 import React, { useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import CryptoJS from "crypto-js";
+import { encryptText } from "../contexts/crypto";
 
-const encryptText = (text) => {
-  console.log(process.env.SECRET_KEY);
-  const encryptedText = CryptoJS.AES.encrypt(
-    text,
-    "process.env.SECRET_KEY"
-  ).toString();
-  console.log(encryptedText, " encryptedText");
-
-  return { encryptedText };
-};
-
-export default function Login({ onIdSubmit, onNumberSubmit, onRedirection }) {
+const Login = ({ onIdSubmit, onNumberSubmit, onRedirection }) => {
   const numRef = useRef();
   const usernameRef = useRef();
 
@@ -73,4 +62,6 @@ export default function Login({ onIdSubmit, onNumberSubmit, onRedirection }) {
       </Form>
     </Container>
   );
-}
+};
+
+export default Login;

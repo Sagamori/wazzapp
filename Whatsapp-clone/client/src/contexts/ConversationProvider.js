@@ -5,11 +5,11 @@ import { useSocket } from "./SocketProvider";
 
 // Context provides a way to pass data through the component tree without having to pass props down manually at every level.
 const ConversationContexts = React.createContext();
-export function useConversation() {
+export const useConversation = () => {
   return useContext(ConversationContexts);
-}
+};
 
-export function ConversationProvider({ id, phone_number, children }) {
+export const ConversationProvider = ({ id, phone_number, children }) => {
   const [conversations, setConversations] = useState([]);
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
@@ -80,7 +80,7 @@ export function ConversationProvider({ id, phone_number, children }) {
 
   console.log(id, " id vvvvv");
 
-  function sendMessage(recipients, text) {
+  const sendMessage = (recipients, text) => {
     console.log(recipients, " recipient in socket emit");
     console.log(text, " text in socket emit");
     socket.emit("send-message", { recipients, text });
@@ -90,7 +90,7 @@ export function ConversationProvider({ id, phone_number, children }) {
       sender: id,
       senderPhoneNumber: phone_number,
     });
-  }
+  };
 
   const formattedConversations = conversations.map((conversation, index) => {
     console.log(conversation, "  conversation");
@@ -116,7 +116,12 @@ export function ConversationProvider({ id, phone_number, children }) {
         return contact.contactId === recipient;
       });
 
-      const guest = messages[i].senderPhoneNumber;
+      let guest;
+
+      if (messages.length > 1) {
+        console.log("here");
+        guest = messages[i].senderPhoneNumber;
+      }
 
       const username = (contact && contact.username) || guest;
       console.log(username, "meorshi");
@@ -141,9 +146,9 @@ export function ConversationProvider({ id, phone_number, children }) {
       {children}
     </ConversationContexts.Provider>
   );
-}
+};
 
-function arrayEquality(a, b) {
+const arrayEquality = (a, b) => {
   if (a.length !== b.length) return false;
   a.sort();
   b.sort();
@@ -151,4 +156,4 @@ function arrayEquality(a, b) {
   return a.every((e, i) => {
     return e === b[i];
   });
-}
+};

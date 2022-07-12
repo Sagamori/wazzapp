@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useConversation } from "../contexts/ConversationProvider";
 
-export default function OpenConversation({}) {
+const OpenConversation = ({}) => {
   const [text, setText] = useState("");
   const setRef = useCallback((node) => {
     if (node) {
@@ -29,7 +29,7 @@ export default function OpenConversation({}) {
       <div className="flex-grow-1 overflow-auto">
         <div className="d-flex flex-column align-items-start justify-content-end pc-3">
           {selectedConversation.messages.map((message, index) => {
-            console.log(message, ' message metqi');
+            console.log(message, " message metqi");
             const lastMessage =
               selectedConversation.messages.length - 1 === index;
 
@@ -78,4 +78,6 @@ export default function OpenConversation({}) {
       </Form>
     </div>
   );
-}
+};
+
+export default OpenConversation;

@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import { useContacts } from '../contexts/ContactsProvider';
-import { useConversation } from '../contexts/ConversationProvider';
+import React, { useState } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import { useContacts } from "../contexts/ContactsProvider";
+import { useConversation } from "../contexts/ConversationProvider";
 
-export default function NewConversationModal({ closeModal }) {
+const NewConversationModal = ({ closeModal }) => {
   const [selectedContactId, setSelectedContactId] = useState([]);
 
   const { contacts } = useContacts();
   const { createConversation } = useConversation();
-  console.log(contacts, ' wesit');
-  function handleSubmit(e) {
+  console.log(contacts, " wesit");
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     createConversation(selectedContactId);
     closeModal();
-  }
+  };
 
-  function handleCheckboxChange(contactId) {
-    console.log(contactId, ' id first');
+  const handleCheckboxChange = (contactId) => {
+    console.log(contactId, " id first");
     setSelectedContactId((prevSelectedContactId) => {
       if (prevSelectedContactId.includes(contactId)) {
         return prevSelectedContactId.filter((prevId) => {
@@ -27,7 +27,7 @@ export default function NewConversationModal({ closeModal }) {
         return [...prevSelectedContactId, contactId];
       }
     });
-  }
+  };
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function NewConversationModal({ closeModal }) {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           {contacts.map((contact) => {
-            console.log(contact, ' in map modal conversation');
+            console.log(contact, " in map modal conversation");
             return (
               <Form.Group controlId={contact._id} key={contact._id}>
                 <Form.Check
@@ -53,4 +53,6 @@ export default function NewConversationModal({ closeModal }) {
       </Modal.Body>
     </>
   );
-}
+};
+
+export default NewConversationModal;

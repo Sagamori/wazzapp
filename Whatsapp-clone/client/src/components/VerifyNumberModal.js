@@ -2,30 +2,20 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import CryptoJS from "crypto-js";
+import { encryptText } from "../contexts/crypto";
 
-export default function VerifyNumberModal({
+const VerifyNumberModal = ({
   onId,
   tokenId,
   phone_number,
   username,
   onRedirection,
   onNumber,
-}) {
-  const encryptText = (text) => {
-    console.log(process.env.SECRET_KEY);
-    const encryptedText = CryptoJS.AES.encrypt(
-      text,
-      "process.env.SECRET_KEY"
-    ).toString();
-    console.log(encryptedText, " encryptedText");
-
-    return { encryptedText };
-  };
+}) => {
   const codeRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(id);
 
     try {
       await axios.post("http://localhost:5000/verify", {
@@ -69,4 +59,6 @@ export default function VerifyNumberModal({
       </Form>
     </Container>
   );
-}
+};
+
+export default VerifyNumberModal;

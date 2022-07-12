@@ -2,7 +2,7 @@ import React from "react";
 import { ListGroup } from "react-bootstrap";
 import { useConversation } from "../contexts/ConversationProvider";
 
-export default function Conversation() {
+const Conversation = () => {
   const { conversations, selectedConversationIndex } = useConversation();
   console.log(conversations, "aha conversationshiiiii");
   return (
@@ -23,4 +23,6 @@ export default function Conversation() {
       ))}
     </ListGroup>
   );
-}
+};
+
+export default Conversation;

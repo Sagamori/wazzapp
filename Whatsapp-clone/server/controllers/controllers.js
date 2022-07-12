@@ -116,7 +116,7 @@ const sendCode = async (req, res) => {
       originator: "wazzapp",
       template: "Your verification code is %token.",
     },
-    function (err, response) {
+    (err, response) => {
       if (err) {
         res.json({ error: err.errors[0].description });
         console.log(err);

@@ -1,15 +1,15 @@
-import React from 'react';
-import { useContacts } from '../contexts/ContactsProvider';
-import { useConversation } from '../contexts/ConversationProvider';
-import OpenConversation from './OpenConversation';
-import SideBar from './SideBar';
+import React from "react";
+import { useContacts } from "../contexts/ContactsProvider";
+import { useConversation } from "../contexts/ConversationProvider";
+import OpenConversation from "./OpenConversation";
+import SideBar from "./SideBar";
 
-export default function Dashboard() {
+const Dashboard = () => {
   const { selectedConversation } = useConversation();
   const { number } = useContacts();
 
   return (
-    <div className="d-flex bg-secondary" style={{ height: '100vh' }}>
+    <div className="d-flex bg-secondary" style={{ height: "100vh" }}>
       <SideBar number={number} />
 
       {
@@ -18,4 +18,6 @@ export default function Dashboard() {
       }
     </div>
   );
-}
+};
+
+export default Dashboard;

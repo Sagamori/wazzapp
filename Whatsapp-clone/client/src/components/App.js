@@ -7,15 +7,9 @@ import { ConversationProvider } from "../contexts/ConversationProvider";
 import { SocketProvider } from "../contexts/SocketProvider";
 import RegistrationForm from "./Registration";
 import useLocalStorage from "../hooks/localStorage";
+import { decryptText } from "../contexts/crypto";
 
-const decryptText = (encryptedText) => {
-  console.log(process.env.REACT_APP_SECRET_KEY);
-  const bytes = CryptoJS.AES.decrypt(encryptedText, "process.env.SECRET_KEY");
-  const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
-  return { decryptedText };
-};
-
-function App() {
+const App = () => {
   const [redirect, setRedirect] = useState("");
   const [id, setId] = useLocalStorage("id");
   const [loginId, setLoginId] = useState();
@@ -75,6 +69,6 @@ function App() {
       onRedirection={setRedirect}
     />
   );
-}
+};
 
 export default App;

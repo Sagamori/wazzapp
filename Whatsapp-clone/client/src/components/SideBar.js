@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { Button, Modal, Nav, Tab } from 'react-bootstrap';
-import Conversation from './Conversation';
-import Contacts from './Contacts';
-import NewConversationModal from './NewConversationModal';
-import NewContactsModal from './NewContactsModal';
+import React, { useState } from "react";
+import { Button, Modal, Nav, Tab } from "react-bootstrap";
+import Conversation from "./Conversation";
+import Contacts from "./Contacts";
+import NewConversationModal from "./NewConversationModal";
+import NewContactsModal from "./NewContactsModal";
 
-const Conversation_Key = 'conversations';
-const Contacts_Key = 'contacts';
+const Conversation_Key = "conversations";
+const Contacts_Key = "contacts";
 
-export default function SideBar({ number }) {
+const SideBar = ({ number }) => {
   const [activeKey, setActiveKey] = useState(Conversation_Key);
   const [modalOpen, setModalOpen] = useState(false);
   const conversationsOpen = activeKey === Conversation_Key;
 
-  function closeModal() {
+  const closeModal = () => {
     setModalOpen(false);
-  }
+  };
 
   return (
-    <div style={{ width: '250px' }} className="d-flex flex-column bg-success">
+    <div style={{ width: "250px" }} className="d-flex flex-column bg-success">
       <Tab.Container activeKey={activeKey} onSelect={setActiveKey}>
         <Nav variant="tabs" className="justify-content-center">
           <Nav.Item>
-            <Nav.Link eventKey={Conversation_Key} style={{ cursor: 'pointer' }}>
+            <Nav.Link eventKey={Conversation_Key} style={{ cursor: "pointer" }}>
               Conversations
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey={Contacts_Key} style={{ cursor: 'pointer' }}>
+            <Nav.Link eventKey={Contacts_Key} style={{ cursor: "pointer" }}>
               Contacts
             </Nav.Link>
           </Nav.Item>
@@ -46,7 +46,7 @@ export default function SideBar({ number }) {
             onClick={() => setModalOpen(true)}
             className="rounded-0 w-100"
           >
-            New {conversationsOpen ? 'Conversation' : 'Contact'}
+            New {conversationsOpen ? "Conversation" : "Contact"}
           </Button>
         </div>
       </Tab.Container>
@@ -60,4 +60,6 @@ export default function SideBar({ number }) {
       </Modal>
     </div>
   );
-}
+};
+
+export default SideBar;
