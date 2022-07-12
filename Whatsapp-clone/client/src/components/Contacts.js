@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Button, Form, ListGroup } from 'react-bootstrap';
-import { useContacts } from '../contexts/ContactsProvider';
+import React, { useRef, useState } from "react";
+import { Button, Form, ListGroup } from "react-bootstrap";
+import { useContacts } from "../contexts/ContactsProvider";
 
 export default function Contacts() {
   const { contacts } = useContacts();

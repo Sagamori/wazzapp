@@ -9,12 +9,14 @@ export function useConversation() {
   return useContext(ConversationContexts);
 }
 
-export function ConversationProvider({ id, children }) {
+export function ConversationProvider({ id, phone_number, children }) {
+  console.log(children, '-------------------->');
   const [conversations, setConversations] = useState([]);
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
   const { contacts, number } = useContacts();
+  console.log(conversations, 'mtavari gate');
 
   const createConversation = async (recipients) => {
     console.log(recipients, ' reci[ients');
@@ -26,14 +28,12 @@ export function ConversationProvider({ id, children }) {
           recipients,
         }
       );
+      console.log(data, 'here');
 
       setConversations((prevConversations) => {
         return [
           ...prevConversations,
-          {
-            recipients,
-            messages: [],
-          },
+          { recipients, messages: [], phone_number: data[0].phone_number },
         ];
       });
     } catch (error) {
@@ -42,21 +42,14 @@ export function ConversationProvider({ id, children }) {
   };
 
   const addMessageToConversation = useCallback(
-    ({ recipients, text, sender }) => {
+    ({ recipients, text, sender, senderPhoneNumber }) => {
+      console.log(sender, 'shead jad i h');
+      console.log(senderPhoneNumber, ' midi raaa telefoni');
+      console.log();
       setConversations((prevConversations) => {
         let madeChange = false;
-        const newMessage = { sender, text };
-        let senderNumb;
 
-        axios
-          .post('http://localhost:5000/profiles', {
-            id: sender,
-          })
-          .then(({ data }) =>
-            console.log(data.phone_number, ' data.phone_number')
-          );
-
-        console.log(senderNumb, ' senderNumb senderNumb senderNumb');
+        const newMessage = { sender, text, senderPhoneNumber };
 
         const newConversations = prevConversations.map((conversation) => {
           console.log(conversation, '  conversation in action');
@@ -67,6 +60,7 @@ export function ConversationProvider({ id, children }) {
               messages: [...conversation.messages, newMessage],
             };
           }
+          console.log(conversation, ' ai awandakkkk');
           return conversation;
         });
 
@@ -87,39 +81,51 @@ export function ConversationProvider({ id, children }) {
     return () => socket.off('receive-message');
   }, [socket, addMessageToConversation]);
 
+  console.log(id, ' id vvvvv');
+
   function sendMessage(recipients, text) {
+    console.log(recipients, ' recipient in socket emit');
+    console.log(text, ' text in socket emit');
     socket.emit('send-message', { recipients, text });
-    addMessageToConversation({ recipients, text, sender: id });
+    addMessageToConversation({
+      recipients,
+      text,
+      sender: id,
+      senderPhoneNumber: phone_number,
+    });
   }
 
   const formattedConversations = conversations.map((conversation, index) => {
     console.log(conversation, '  conversation');
-    const recipients = conversation.recipients.map((recipient) => {
+
+    const messages = conversation.messages.map((message) => {
+      console.log();
+      const contact = contacts.find((contact) => {
+        return contact.contactId === message.sender;
+      });
+      console.log(message, 'mtliani message');
+      console.log(contact, 'contact');
+      const username =
+        (contact && contact.username) || message.senderPhoneNumber;
+      console.log(username, 'username');
+
+      const fromMe = id === message.sender;
+      return { ...message, senderName: username, fromMe };
+    });
+    console.log(messages, 'esaaa axla');
+
+    const recipients = conversation.recipients.map((recipient, i) => {
       const contact = contacts.find((contact) => {
         return contact.contactId === recipient;
       });
 
-      const username = (contact && contact.username) || recipient;
+      const guest = messages[i].senderPhoneNumber;
 
+      const username = (contact && contact.username) || guest;
+      console.log(username, 'meorshi');
       return { contactId: recipient, username };
     });
     console.log(recipients, ' recipients after find');
-
-    const messages = conversation.messages.map((message) => {
-      const contact = contacts.find((contact) => {
-        return contact.contactId === message.sender;
-      });
-
-      console.log(message.sender, '; 923052950283');
-
-      // console.log(data.phone_number, ' data.phone_number');
-      console.log(message);
-      const username = (contact && contact.username) || message.sender;
-      console.log(username, ' username after expression');
-      const fromMe = id === message.sender;
-
-      return { ...message, senderName: username, fromMe };
-    });
 
     console.log(messages, ' messages after everything');
 

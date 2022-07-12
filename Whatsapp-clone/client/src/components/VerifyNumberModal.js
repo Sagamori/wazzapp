@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 
 export default function VerifyNumberModal({
-  id,
+  tokenId,
+  onId,
   phone_number,
   username,
   onRedirection,
@@ -16,15 +17,17 @@ export default function VerifyNumberModal({
 
     try {
       await axios.post('http://localhost:5000/verify', {
-        id,
+        id: tokenId,
         token: codeRef.current.value,
       });
 
-      await axios.post('http://localhost:5000/registration', {
+      const { data } = await axios.post('http://localhost:5000/registration', {
         phone_number,
         username,
       });
       onNumber(phone_number);
+      console.log(data._id, ' იდ დატა ეჰჰე');
+      onId(data._id);
       return onRedirection('dashboard');
     } catch (error) {
       console.log(error);

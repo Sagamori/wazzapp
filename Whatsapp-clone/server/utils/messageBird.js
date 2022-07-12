@@ -7,7 +7,6 @@ app.use(express.json());
 
 app.post("/step2", (req, res) => {
   const { number } = req.body;
-  console.log(number);
 
   messagebird.verify.create(
     number,
@@ -17,13 +16,10 @@ app.post("/step2", (req, res) => {
     },
     function (err, response) {
       if (err) {
-        console.log(err);
       } else {
-        console.log(response);
       }
     }
   );
-  console.log(a, "esss");
 });
 
 app.post("/step3", (req, res) => {
@@ -32,9 +28,7 @@ app.post("/step3", (req, res) => {
 
   messagebird.verify.verify(id, token, (err, response) => {
     if (err) {
-      console.log(err);
     } else {
-      console.log(response);
     }
   });
 });

@@ -17,12 +17,12 @@ const register = async (req, res) => {
   console.log(username, phone_number);
 
   try {
-    await User.create({
+    const { _id } = await User.create({
       username,
       phone_number,
       password,
     });
-    res.json({ msg: 'Registration Successful' });
+    res.json({ id: _id });
   } catch (error) {
     console.log(error);
   }

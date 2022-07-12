@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Button, Container, Form, Modal } from 'react-bootstrap';
 import VerifyNumberModal from './VerifyNumberModal';
 
-export default function RegistrationForm({ onRedirection, onNumber }) {
-  const [id, setId] = useState();
+export default function RegistrationForm({ onRedirection, onNumber, onId }) {
+  const [tokenId, setTokenId] = useState();
   const numRef = useRef();
   const usernameRef = useRef();
 
@@ -14,7 +14,7 @@ export default function RegistrationForm({ onRedirection, onNumber }) {
       const { data } = await axios.post('http://localhost:5000/sendCode', {
         number: numRef.current.value,
       });
-      setId(data.id);
+      setTokenId(data.id);
     } catch (error) {
       console.log(error);
     }
@@ -27,7 +27,8 @@ export default function RegistrationForm({ onRedirection, onNumber }) {
 
   return id ? (
     <VerifyNumberModal
-      id={id}
+      id={tokenId}
+      onId={onId}
       username={usernameRef.current.value}
       phone_number={numRef.current.value}
       onRedirection={onRedirection}
