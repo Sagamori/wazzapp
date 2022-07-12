@@ -1,7 +1,16 @@
 const Contact = require('../database/models/contact-model.js');
-const Conversation = require('../database/models/conversation-model.js');
 const User = require('../database/models/user-model.js');
-const messagebird = require('messagebird')('UrYOgshu9l1rym47H8dTuHRrr');
+const messagebird = require('messagebird')('QbAoTrUposNZOFDz6E0i2sVfJ');
+
+const getUserData = async (req, res) => {
+  const { id: userId } = req.body;
+  const user = await User.findOne({ _id: userId }).select([
+    'username',
+    'phone_number',
+  ]);
+  console.log(user, ' selected');
+  res.json(user);
+};
 
 const register = async (req, res) => {
   const { username, phone_number, password } = req.body;
@@ -142,4 +151,5 @@ module.exports = {
   addContact,
   getContacts,
   addConversation,
+  getUserData,
 };

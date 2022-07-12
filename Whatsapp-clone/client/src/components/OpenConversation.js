@@ -15,7 +15,10 @@ export default function OpenConversation({}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     sendMessage(
-      selectedConversation.recipients.map((r) => r.contactId),
+      selectedConversation.recipients.map((r) => {
+        console.log(r, ' here');
+        return r.contactId;
+      }),
       text,
       setText('')
     );
@@ -26,7 +29,7 @@ export default function OpenConversation({}) {
       <div className="flex-grow-1 overflow-auto">
         <div className="d-flex flex-column align-items-start justify-content-end pc-3">
           {selectedConversation.messages.map((message, index) => {
-            console.log(message, ' message in div');
+            // console.log(message, ' message metqi');
             const lastMessage =
               selectedConversation.messages.length - 1 === index;
 
@@ -48,7 +51,7 @@ export default function OpenConversation({}) {
                   {message.text}
                 </div>
                 <div
-                  className={`text-muted small ${
+                  className={`small text-info ${
                     message.fromMe ? 'text-left' : ''
                   } `}
                 >

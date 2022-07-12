@@ -9,14 +9,15 @@ export function useConversation() {
   return useContext(ConversationContexts);
 }
 
-export function ConversationProvider({ id, phone_number, children }) {
+export function ConversationProvider({ id, children }) {
   const [conversations, setConversations] = useState([]);
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const socket = useSocket();
-  const { contacts } = useContacts();
+  const { contacts, number } = useContacts();
 
   const createConversation = async (recipients) => {
+    console.log(recipients, ' reci[ients');
     try {
       const { data } = await axios.post(
         'http://localhost:5000/dashboard/conversation',
@@ -27,7 +28,13 @@ export function ConversationProvider({ id, phone_number, children }) {
       );
 
       setConversations((prevConversations) => {
-        return [...prevConversations, { recipients, messages: [] }];
+        return [
+          ...prevConversations,
+          {
+            recipients,
+            messages: [],
+          },
+        ];
       });
     } catch (error) {
       console.log(error);
@@ -39,6 +46,17 @@ export function ConversationProvider({ id, phone_number, children }) {
       setConversations((prevConversations) => {
         let madeChange = false;
         const newMessage = { sender, text };
+        let senderNumb;
+
+        axios
+          .post('http://localhost:5000/profiles', {
+            id: sender,
+          })
+          .then(({ data }) =>
+            console.log(data.phone_number, ' data.phone_number')
+          );
+
+        console.log(senderNumb, ' senderNumb senderNumb senderNumb');
 
         const newConversations = prevConversations.map((conversation) => {
           console.log(conversation, '  conversation in action');
@@ -69,11 +87,7 @@ export function ConversationProvider({ id, phone_number, children }) {
     return () => socket.off('receive-message');
   }, [socket, addMessageToConversation]);
 
-  console.log(id, ' id vvvvv');
-
   function sendMessage(recipients, text) {
-    console.log(recipients, ' recipient in socket emit');
-    console.log(text, ' text in socket emit');
     socket.emit('send-message', { recipients, text });
     addMessageToConversation({ recipients, text, sender: id });
   }
@@ -82,37 +96,37 @@ export function ConversationProvider({ id, phone_number, children }) {
     console.log(conversation, '  conversation');
     const recipients = conversation.recipients.map((recipient) => {
       const contact = contacts.find((contact) => {
-        console.log(recipient, ' recipient formatted');
-        console.log(contact, ' contacts in formatted');
         return contact.contactId === recipient;
       });
 
       const username = (contact && contact.username) || recipient;
+
       return { contactId: recipient, username };
     });
     console.log(recipients, ' recipients after find');
 
     const messages = conversation.messages.map((message) => {
       const contact = contacts.find((contact) => {
-        console.log(id, ' a batono');
-        console.log(contact, ' conk');
-        console.log(message, ' message');
-        return id === message.sender;
+        return contact.contactId === message.sender;
       });
 
+      console.log(message.sender, '; 923052950283');
+
+      // console.log(data.phone_number, ' data.phone_number');
+      console.log(message);
       const username = (contact && contact.username) || message.sender;
+      console.log(username, ' username after expression');
       const fromMe = id === message.sender;
 
       return { ...message, senderName: username, fromMe };
     });
 
-    console.log(messages, ' esaaa is?');
+    console.log(messages, ' messages after everything');
 
     const selected = index === selectedConversationIndex;
     return { ...conversation, messages, recipients, selected };
   });
 
-  // Object will be Passed as data into ConversationContext
   const value = {
     conversations: formattedConversations,
     selectedConversation: formattedConversations[selectedConversationIndex],
