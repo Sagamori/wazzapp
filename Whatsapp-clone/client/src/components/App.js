@@ -20,18 +20,21 @@ function App() {
   const [id, setId] = useLocalStorage("id");
   const [loginId, setLoginId] = useState();
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [number, setOnNumber] = useState("");
 
   console.log({ phoneNumber });
+  console.log({ id });
 
   if (id && !loginId) {
     console.log(id);
     const { decryptedText: loginId } = decryptText(id);
+    console.log(loginId, id);
     return setLoginId(loginId);
   }
 
   const dashboard = (
     <SocketProvider id={loginId} phone_number={phoneNumber}>
-      <ContactsProvider id={loginId}>
+      <ContactsProvider id={loginId} phone_number={phoneNumber}>
         <ConversationProvider id={loginId} phone_number={phoneNumber}>
           <Dashboard />
         </ConversationProvider>
@@ -50,7 +53,13 @@ function App() {
   }
 
   if (redirect === "registration") {
-    return <RegistrationForm onRedirection={setRedirect} />;
+    return (
+      <RegistrationForm
+        onRedirection={setRedirect}
+        onId={setId}
+        onNumber={setPhoneNumber}
+      />
+    );
   }
 
   if (redirect === "dashboard") {

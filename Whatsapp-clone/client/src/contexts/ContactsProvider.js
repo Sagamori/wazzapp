@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 
 const ContactsContexts = React.createContext();
 
@@ -7,14 +7,14 @@ export function useContacts() {
   return useContext(ContactsContexts);
 }
 
-export function ContactsProvider({ id, children }) {
+export function ContactsProvider({ id, children, phone_number }) {
   const [number, setNumber] = useState();
   const [contacts, setContacts] = useState([]);
   const [stop, setStop] = useState(false);
 
   useEffect(() => {
     axios
-      .post('http://localhost:5000/login/profile', { id })
+      .post("http://localhost:5000/login/profile", { id })
       .then(({ data }) => {
         setNumber(data.phone_number);
       });
@@ -22,7 +22,7 @@ export function ContactsProvider({ id, children }) {
 
   useEffect(() => {
     axios
-      .post('http://localhost:5000/dashboard/myContacts', { id })
+      .post("http://localhost:5000/dashboard/myContacts", { id })
       .then(({ data }) => {
         setContacts(data);
       });
@@ -31,7 +31,7 @@ export function ContactsProvider({ id, children }) {
   const createContact = async (phone_number) => {
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/dashboard/contacts',
+        "http://localhost:5000/dashboard/contacts",
         { id, phone_number }
       );
 

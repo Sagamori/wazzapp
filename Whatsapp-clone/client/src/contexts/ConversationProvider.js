@@ -10,7 +10,6 @@ export function useConversation() {
 }
 
 export function ConversationProvider({ id, phone_number, children }) {
-  console.log(children, "-------------------->");
   const [conversations, setConversations] = useState([]);
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);

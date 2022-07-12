@@ -1,14 +1,14 @@
-const Contact = require('../database/models/contact-model.js');
-const User = require('../database/models/user-model.js');
-const messagebird = require('messagebird')('QbAoTrUposNZOFDz6E0i2sVfJ');
+const Contact = require("../database/models/contact-model.js");
+const User = require("../database/models/user-model.js");
+const messagebird = require("messagebird")("wl3p2WMUjx4gysA2peUQL0VR4");
 
 const getUserData = async (req, res) => {
   const { id: userId } = req.body;
   const user = await User.findOne({ _id: userId }).select([
-    'username',
-    'phone_number',
+    "username",
+    "phone_number",
   ]);
-  console.log(user, ' selected');
+  console.log(user, " selected");
   res.json(user);
 };
 
@@ -17,12 +17,12 @@ const register = async (req, res) => {
   console.log(username, phone_number);
 
   try {
-    await User.create({
+    const { _id } = await User.create({
       username,
       phone_number,
       password,
     });
-    res.json({ msg: 'Registration Successful' });
+    res.json({ id: _id });
   } catch (error) {
     console.log(error);
   }
@@ -32,7 +32,7 @@ const login = async (req, res) => {
   const { username, phone_number } = req.body;
   const [user] = await User.find({
     $or: [{ phone_number }, { username }],
-  }).select(['username', 'phone_number']);
+  }).select(["username", "phone_number"]);
 
   if (!user) {
     return res.json({ message: "User doesn't exists!!!" });
@@ -43,13 +43,13 @@ const login = async (req, res) => {
   ) {
     return res.json(user);
   }
-  res.json({ message: 'Invalid Credentials!!!' });
+  res.json({ message: "Invalid Credentials!!!" });
 };
 
 const addContact = async (req, res) => {
   const { id: userId, phone_number } = req.body;
   const user = await User.findOne({ phone_number });
-  if (!user) return ' no user';
+  if (!user) return " no user";
 
   const contact = {
     phone_number,
@@ -65,7 +65,7 @@ const addContact = async (req, res) => {
 
   const { contacts } = await Contact.findOne({ userId });
   const newContact = contacts.filter((e) => e.phone_number === phone_number);
-  console.log(newContact, ' new oine');
+  console.log(newContact, " new oine");
   res.json(newContact);
 };
 
@@ -105,7 +105,7 @@ const addConversation = async (req, res) => {
 };
 
 const sendCode = async (req, res) => {
-  console.log(req.body, 'body in server sendCode function');
+  console.log(req.body, "body in server sendCode function");
 
   const { number } = req.body;
   console.log(number);
@@ -113,8 +113,8 @@ const sendCode = async (req, res) => {
   messagebird.verify.create(
     number,
     {
-      originator: 'wazzapp',
-      template: 'Your verification code is %token.',
+      originator: "wazzapp",
+      template: "Your verification code is %token.",
     },
     function (err, response) {
       if (err) {
