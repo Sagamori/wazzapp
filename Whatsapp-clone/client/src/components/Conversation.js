@@ -15,9 +15,11 @@ const Conversation = () => {
           active={conversation.selected}
         >
           {conversation.recipients
-            .map((r) => {
-              return r.username;
-            })
+            .map((r) =>
+              !r.username
+                ? conversation.messages.map((g) => g.senderPhoneNumber)
+                : r.username
+            )
             .join(", ")}
         </ListGroup.Item>
       ))}

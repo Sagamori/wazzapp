@@ -26,7 +26,7 @@ export const ConversationProvider = ({ id, phone_number, children }) => {
           recipients,
         }
       );
-      console.log(data, "here");
+      console.log(data, "herejhgfdfghj");
 
       setConversations((prevConversations) => {
         return [
@@ -118,10 +118,9 @@ export const ConversationProvider = ({ id, phone_number, children }) => {
 
       let guest;
 
-      if (messages.length > 1) {
-        console.log("here");
-        guest = messages[i].senderPhoneNumber;
-      }
+      conversation.messages.map((g) => {
+        guest = g.senderPhoneNumber;
+      });
 
       const username = (contact && contact.username) || guest;
       console.log(username, "meorshi");
