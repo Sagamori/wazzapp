@@ -1,62 +1,59 @@
-import React, { useEffect, useState } from "react";
-import CryptoJS from "crypto-js";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import { ContactsProvider } from "../contexts/ContactsProvider";
-import { ConversationProvider } from "../contexts/ConversationProvider";
-import { SocketProvider } from "../contexts/SocketProvider";
-import RegistrationForm from "./Registration";
-import useLocalStorage from "../hooks/localStorage";
-import { decryptText } from "../contexts/crypto";
+import React, { useEffect, useState } from 'react';
+import CryptoJS from 'crypto-js';
+import Login from './Login';
+import Dashboard from './Dashboard';
+import { ContactsProvider } from '../contexts/ContactsProvider';
+import { ConversationProvider } from '../contexts/ConversationProvider';
+import { SocketProvider } from '../contexts/SocketProvider';
+import RegistrationForm from './Registration';
+import useLocalStorage from '../hooks/localStorage';
+import { decryptText } from '../contexts/crypto';
 
 const App = () => {
-  const [redirect, setRedirect] = useState("");
-  const [id, setId] = useLocalStorage("id");
+  const [redirect, setRedirect] = useState('');
+  const [lc_id, set_lc_Id] = useLocalStorage('id');
+  const [lc_phoneNumber, set_lc_phone_number] = useLocalStorage('phone-number');
   const [loginId, setLoginId] = useState();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [number, setOnNumber] = useState("");
+  const [phone_number, setPhoneNumber] = useState();
 
-  console.log({ phoneNumber });
-  console.log({ id });
-
-  if (id && !loginId) {
-    console.log(id);
-    const { decryptedText: loginId } = decryptText(id);
-    console.log(loginId, id);
+  if (lc_id && !loginId) {
+    const { decryptedText: loginId } = decryptText(lc_id);
+    const { decryptedText: number } = decryptText(lc_phoneNumber);
+    setPhoneNumber(number);
     return setLoginId(loginId);
   }
 
   const dashboard = (
-    <SocketProvider id={loginId} phone_number={phoneNumber}>
-      <ContactsProvider id={loginId} phone_number={phoneNumber}>
-        <ConversationProvider id={loginId} phone_number={phoneNumber}>
+    <SocketProvider id={loginId} phone_number={phone_number}>
+      <ContactsProvider id={loginId} phone_number={phone_number}>
+        <ConversationProvider id={loginId} phone_number={phone_number}>
           <Dashboard />
         </ConversationProvider>
       </ContactsProvider>
     </SocketProvider>
   );
 
-  if (redirect === "login") {
+  if (redirect === 'login') {
     return (
       <Login
-        onIdSubmit={setId}
+        onIdSubmit={set_lc_Id}
         onNumberSubmit={setPhoneNumber}
         onRedirection={setRedirect}
       />
     );
   }
 
-  if (redirect === "registration") {
+  if (redirect === 'registration') {
     return (
       <RegistrationForm
         onRedirection={setRedirect}
-        onId={setId}
-        onNumber={setPhoneNumber}
+        onId={set_lc_Id}
+        onNumber={set_lc_phone_number}
       />
     );
   }
 
-  if (redirect === "dashboard") {
+  if (redirect === 'dashboard') {
     return dashboard;
   }
 
@@ -64,8 +61,8 @@ const App = () => {
     dashboard
   ) : (
     <Login
-      onIdSubmit={setId}
-      onNumberSubmit={setPhoneNumber}
+      onIdSubmit={set_lc_Id}
+      onNumberSubmit={set_lc_phone_number}
       onRedirection={setRedirect}
     />
   );

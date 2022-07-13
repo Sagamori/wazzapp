@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const PREFIX = "wazzapp-";
+const PREFIX = 'wazzapp-';
 
 const useLocalStorage = (key, initialValue) => {
   const prefixedKey = PREFIX + key;
@@ -8,7 +8,7 @@ const useLocalStorage = (key, initialValue) => {
     const jsonValue = localStorage.getItem(prefixedKey);
     if (typeof jsonValue === undefined) return null;
     if (jsonValue != null) return JSON.parse(jsonValue);
-    if (typeof initialValue === "function") {
+    if (typeof initialValue === 'function') {
       return initialValue();
     } else {
       return initialValue;

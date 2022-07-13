@@ -1,8 +1,7 @@
-import axios from "axios";
-import React, { useRef } from "react";
-import { Button, Container, Form } from "react-bootstrap";
-import CryptoJS from "crypto-js";
-import { encryptText } from "../contexts/crypto";
+import axios from 'axios';
+import React, { useRef } from 'react';
+import { Button, Container, Form } from 'react-bootstrap';
+import { encryptText } from '../contexts/crypto';
 
 const VerifyNumberModal = ({
   onId,
@@ -18,12 +17,12 @@ const VerifyNumberModal = ({
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/verify", {
+      await axios.post('http://localhost:5000/verify', {
         id: tokenId,
         token: codeRef.current.value,
       });
 
-      const { data } = await axios.post("http://localhost:5000/registration", {
+      const { data } = await axios.post('http://localhost:5000/registration', {
         phone_number,
         username,
       });
@@ -31,7 +30,7 @@ const VerifyNumberModal = ({
 
       onId(encryptedText);
       onNumber(phone_number);
-      return onRedirection("dashboard");
+      return onRedirection('dashboard');
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +39,7 @@ const VerifyNumberModal = ({
   return (
     <Container
       className="d-flex flex-column justify-content-center  w-50"
-      style={{ height: "100vh" }}
+      style={{ height: '100vh' }}
     >
       <h1>Enter Code Here</h1>
 
