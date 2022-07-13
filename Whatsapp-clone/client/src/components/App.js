@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import Login from './Login';
-import Dashboard from './Dashboard';
-import { ContactsProvider } from '../contexts/ContactsProvider';
-import { ConversationProvider } from '../contexts/ConversationProvider';
-import { SocketProvider } from '../contexts/SocketProvider';
-import RegistrationForm from './Registration';
-import useLocalStorage from '../hooks/localStorage';
-import { decryptText } from '../hooks/crypto';
+import React, { useEffect, useState } from "react";
+import CryptoJS from "crypto-js";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
+import { ContactsProvider } from "../contexts/ContactsProvider";
+import { ConversationProvider } from "../contexts/ConversationProvider";
+import { SocketProvider } from "../contexts/SocketProvider";
+import RegistrationForm from "./Registration";
+import useLocalStorage from "../hooks/localStorage";
+import { decryptText } from "../contexts/crypto";
 
-function App() {
-  const [redirect, setRedirect] = useState('');
-  const [id, setId] = useLocalStorage('id');
+const App = () => {
+  const [redirect, setRedirect] = useState("");
+  const [id, setId] = useLocalStorage("id");
   const [loginId, setLoginId] = useState();
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [number, setOnNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [number, setOnNumber] = useState("");
 
   console.log({ phoneNumber });
   console.log({ id });
@@ -35,7 +36,7 @@ function App() {
     </SocketProvider>
   );
 
-  if (redirect === 'login') {
+  if (redirect === "login") {
     return (
       <Login
         onIdSubmit={setId}
@@ -45,7 +46,7 @@ function App() {
     );
   }
 
-  if (redirect === 'registration') {
+  if (redirect === "registration") {
     return (
       <RegistrationForm
         onRedirection={setRedirect}
@@ -55,7 +56,7 @@ function App() {
     );
   }
 
-  if (redirect === 'dashboard') {
+  if (redirect === "dashboard") {
     return dashboard;
   }
 
@@ -68,6 +69,6 @@ function App() {
       onRedirection={setRedirect}
     />
   );
-}
+};
 
 export default App;

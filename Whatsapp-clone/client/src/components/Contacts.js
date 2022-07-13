@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Button, Form, ListGroup } from "react-bootstrap";
 import { useContacts } from "../contexts/ContactsProvider";
 
-export default function Contacts() {
+const Contacts = () => {
   const { contacts } = useContacts();
   return (
     <ListGroup variant="flush">
@@ -13,4 +13,6 @@ export default function Contacts() {
       })}
     </ListGroup>
   );
-}
+};
+
+export default Contacts;

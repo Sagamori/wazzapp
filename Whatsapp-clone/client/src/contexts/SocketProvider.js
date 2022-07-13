@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 const SocketContext = React.createContext();
 
-export function useSocket() {
+export const useSocket = () => {
   return useContext(SocketContext);
-}
+};
 
-export function SocketProvider({ id, phone_number, children }) {
+export const SocketProvider = ({ id, phone_number, children }) => {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
@@ -21,4 +21,4 @@ export function SocketProvider({ id, phone_number, children }) {
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
-}
+};

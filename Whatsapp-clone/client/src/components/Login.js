@@ -1,28 +1,28 @@
-import axios from 'axios';
-import React, { useRef } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
-import { encryptText } from '../hooks/crypto';
+import axios from "axios";
+import React, { useRef } from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import { encryptText } from "../contexts/crypto";
 
-export default function Login({ onIdSubmit, onNumberSubmit, onRedirection }) {
+const Login = ({ onIdSubmit, onNumberSubmit, onRedirection }) => {
   const numRef = useRef();
   const usernameRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:5000/login', {
+      const { data } = await axios.post("http://localhost:5000/login", {
         phone_number: numRef.current.value,
         username: usernameRef.current.value,
       });
 
       if (
         data.message !== "User doesn't exists!!!" &&
-        data.message !== 'Invalid Credentials!!!'
+        data.message !== "Invalid Credentials!!!"
       ) {
-        const { encryptedText: loginId } = encryptText(data['_id']);
+        const { encryptedText: loginId } = encryptText(data["_id"]);
         onIdSubmit(loginId);
         onNumberSubmit(numRef.current.value);
-        return onRedirection('dashboard');
+        return onRedirection("dashboard");
       }
 
       throw new Error(data.message);
@@ -33,13 +33,13 @@ export default function Login({ onIdSubmit, onNumberSubmit, onRedirection }) {
 
   const registerRequest = (e) => {
     e.preventDefault();
-    onRedirection('registration');
+    onRedirection("registration");
   };
 
   return (
     <Container
       className="bg-success align-items-center d-flex justify-content-center"
-      style={{ height: '100vh' }}
+      style={{ height: "100vh" }}
     >
       <Form className="w-50" onSubmit={handleSubmit}>
         <Form.Group>
@@ -62,4 +62,6 @@ export default function Login({ onIdSubmit, onNumberSubmit, onRedirection }) {
       </Form>
     </Container>
   );
-}
+};
+
+export default Login;

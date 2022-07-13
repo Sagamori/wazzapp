@@ -1,6 +1,8 @@
 const Contact = require("../database/models/contact-model.js");
 const User = require("../database/models/user-model.js");
-const messagebird = require("messagebird")("wl3p2WMUjx4gysA2peUQL0VR4");
+
+//Message Bird test key
+const messagebird = require("messagebird")("3oL41uxf1Z2rR87PhVdR0hU3D");
 
 const getUserData = async (req, res) => {
   const { id: userId } = req.body;
@@ -82,6 +84,7 @@ const addConversation = async (req, res) => {
   //   const eachRecipient = await User.findOne({ _id: e });
   //   recipient.push(eachRecipient);
   // });
+  console.log(recipients, "controller recipients in conversation");
   for (const item of recipients) {
     const eachRecipient = await User.findOne({ _id: item });
     recipient.push(eachRecipient);
@@ -116,7 +119,7 @@ const sendCode = async (req, res) => {
       originator: "wazzapp",
       template: "Your verification code is %token.",
     },
-    function (err, response) {
+    (err, response) => {
       if (err) {
         res.json({ error: err.errors[0].description });
         console.log(err);

@@ -1,17 +1,17 @@
-import React, { useRef } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import { useContacts } from '../contexts/ContactsProvider';
+import React, { useRef } from "react";
+import { Button, Form, Modal } from "react-bootstrap";
+import { useContacts } from "../contexts/ContactsProvider";
 
-export default function NewContactsModal({ closeModal }) {
+const NewContactsModal = ({ closeModal }) => {
   const numRef = useRef();
   const { createContact } = useContacts();
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     createContact(numRef.current.value);
     closeModal();
-  }
+  };
 
   return (
     <>
@@ -30,4 +30,6 @@ export default function NewContactsModal({ closeModal }) {
       </Modal.Body>
     </>
   );
-}
+};
+
+export default NewContactsModal;

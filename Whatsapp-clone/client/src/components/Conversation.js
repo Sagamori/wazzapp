@@ -1,10 +1,10 @@
-import React from 'react';
-import { ListGroup } from 'react-bootstrap';
-import { useConversation } from '../contexts/ConversationProvider';
+import React from "react";
+import { ListGroup } from "react-bootstrap";
+import { useConversation } from "../contexts/ConversationProvider";
 
-export default function Conversation() {
+const Conversation = () => {
   const { conversations, selectedConversationIndex } = useConversation();
-  console.log(conversations, 'aha conversationshiiiii');
+  console.log(conversations, "aha conversationshiiiii");
   return (
     <ListGroup variant="flush">
       {conversations.map((conversation, index) => (
@@ -15,12 +15,16 @@ export default function Conversation() {
           active={conversation.selected}
         >
           {conversation.recipients
-            .map((r) => {
-              return r.username;
-            })
-            .join(', ')}
+            .map((r) =>
+              !r.username
+                ? conversation.messages.map((g) => g.senderPhoneNumber)
+                : r.username
+            )
+            .join(", ")}
         </ListGroup.Item>
       ))}
     </ListGroup>
   );
-}
+};
+
+export default Conversation;

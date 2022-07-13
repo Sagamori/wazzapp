@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 
 const ContactsContexts = React.createContext();
 
-export function useContacts() {
+export const useContacts = () => {
   return useContext(ContactsContexts);
-}
+};
 
-export function ContactsProvider({ id, children, phone_number }) {
+export const ContactsProvider = ({ id, children, phone_number }) => {
   const [number, setNumber] = useState();
   const [contacts, setContacts] = useState([]);
   const [stop, setStop] = useState(false);
@@ -57,4 +57,4 @@ export function ContactsProvider({ id, children, phone_number }) {
       {children}
     </ContactsContexts.Provider>
   );
-}
+};
