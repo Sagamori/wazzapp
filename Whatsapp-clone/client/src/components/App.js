@@ -1,49 +1,33 @@
-import React, { useEffect, useState } from "react";
-import CryptoJS from "crypto-js";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import { ContactsProvider } from "../contexts/ContactsProvider";
-import { ConversationProvider } from "../contexts/ConversationProvider";
-import { SocketProvider } from "../contexts/SocketProvider";
-import RegistrationForm from "./Registration";
-import useLocalStorage from "../hooks/localStorage";
-
-const decryptText = (encryptedText) => {
-<<<<<<< HEAD
-  const bytes = CryptoJS.AES.decrypt(
-    encryptedText,
-    process.env.REACT_APP_SECRET_KEY
-  );
-=======
-  console.log(process.env.REACT_APP_SECRET_KEY);
-  const bytes = CryptoJS.AES.decrypt(encryptedText, "process.env.SECRET_KEY");
->>>>>>> 2c9c33da0eb8d381931de5f63738442d110d3d5c
-  const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
-  console.log(decryptedText, ' decryptedText');
-  return { decryptedText };
-};
+import React, { useState } from 'react';
+import Login from './Login';
+import Dashboard from './Dashboard';
+import { ContactsProvider } from '../contexts/ContactsProvider';
+import { ConversationProvider } from '../contexts/ConversationProvider';
+import { SocketProvider } from '../contexts/SocketProvider';
+import RegistrationForm from './Registration';
+import useLocalStorage from '../hooks/localStorage';
+import { decryptText } from '../hooks/crypto';
 
 function App() {
-<<<<<<< HEAD
   const [redirect, setRedirect] = useState('');
   const [id, setId] = useLocalStorage('id');
-=======
-  const [redirect, setRedirect] = useState("");
-  const [id, setId] = useLocalStorage("id");
->>>>>>> 2c9c33da0eb8d381931de5f63738442d110d3d5c
   const [loginId, setLoginId] = useState();
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [number, setOnNumber] = useState('');
 
   console.log({ phoneNumber });
+  console.log({ id });
 
   if (id && !loginId) {
+    console.log(id);
     const { decryptedText: loginId } = decryptText(id);
-    setLoginId(loginId);
+    console.log(loginId, id);
+    return setLoginId(loginId);
   }
 
   const dashboard = (
     <SocketProvider id={loginId} phone_number={phoneNumber}>
-      <ContactsProvider id={loginId}>
+      <ContactsProvider id={loginId} phone_number={phoneNumber}>
         <ConversationProvider id={loginId} phone_number={phoneNumber}>
           <Dashboard />
         </ConversationProvider>
@@ -51,7 +35,7 @@ function App() {
     </SocketProvider>
   );
 
-  if (redirect === "login") {
+  if (redirect === 'login') {
     return (
       <Login
         onIdSubmit={setId}
@@ -61,13 +45,20 @@ function App() {
     );
   }
 
-  if (redirect === "registration") {
-    return <RegistrationForm onRedirection={setRedirect} onId={setId}/>;
+  if (redirect === 'registration') {
+    return (
+      <RegistrationForm
+        onRedirection={setRedirect}
+        onId={setId}
+        onNumber={setPhoneNumber}
+      />
+    );
   }
 
-  if (redirect === "dashboard") {
+  if (redirect === 'dashboard') {
     return dashboard;
   }
+
   return loginId ? (
     dashboard
   ) : (

@@ -10,7 +10,6 @@ export function useConversation() {
 }
 
 export function ConversationProvider({ id, phone_number, children }) {
-  console.log(children, '-------------------->');
   const [conversations, setConversations] = useState([]);
 
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
@@ -19,7 +18,6 @@ export function ConversationProvider({ id, phone_number, children }) {
   console.log(conversations, 'mtavari gate');
 
   const createConversation = async (recipients) => {
-    console.log(recipients, ' reci[ients');
     try {
       const { data } = await axios.post(
         'http://localhost:5000/dashboard/conversation',
@@ -48,7 +46,6 @@ export function ConversationProvider({ id, phone_number, children }) {
       console.log();
       setConversations((prevConversations) => {
         let madeChange = false;
-
         const newMessage = { sender, text, senderPhoneNumber };
 
         const newConversations = prevConversations.map((conversation) => {
@@ -103,31 +100,36 @@ export function ConversationProvider({ id, phone_number, children }) {
       const contact = contacts.find((contact) => {
         return contact.contactId === message.sender;
       });
-      console.log(message, 'mtliani message');
-      console.log(contact, 'contact');
+
       const username =
         (contact && contact.username) || message.senderPhoneNumber;
-      console.log(username, 'username');
 
       const fromMe = id === message.sender;
       return { ...message, senderName: username, fromMe };
     });
-    console.log(messages, 'esaaa axla');
 
-    const recipients = conversation.recipients.map((recipient, i) => {
+    const recipients = conversation.recipients.map((recipient) => {
       const contact = contacts.find((contact) => {
+        console.log(recipient);
         return contact.contactId === recipient;
       });
 
-      const guest = messages[i].senderPhoneNumber;
+      const test = messages.find((e) => {
+        return e.sender === recipient;
+      });
 
-      const username = (contact && contact.username) || guest;
-      console.log(username, 'meorshi');
-      return { contactId: recipient, username };
+      console.log(test, 'test');
+
+      if (contact && contact.username) {
+        return { contactId: recipient, username: contact.username };
+      }
+
+      const unknownContact = 'unknown';
+      // const username = (contact && contact.username) || 'guest';
+      // console.log(username, 'meorshi');
+      return { contactId: recipient, username: test };
     });
     console.log(recipients, ' recipients after find');
-
-    console.log(messages, ' messages after everything');
 
     const selected = index === selectedConversationIndex;
     return { ...conversation, messages, recipients, selected };

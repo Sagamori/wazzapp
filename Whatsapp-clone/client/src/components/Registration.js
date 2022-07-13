@@ -1,19 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import { Button, Container, Form, Modal } from 'react-bootstrap';
-import VerifyNumberModal from './VerifyNumberModal';
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { Button, Container, Form, Modal } from "react-bootstrap";
+import VerifyNumberModal from "./VerifyNumberModal";
 
 export default function RegistrationForm({ onRedirection, onNumber, onId }) {
   const [tokenId, setTokenId] = useState();
   const numRef = useRef();
   const usernameRef = useRef();
-
+  console.log(onNumber, "esaaa axla rac minda");
+  console.log(tokenId, "saesa");
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("here");
     try {
-      const { data } = await axios.post('http://localhost:5000/sendCode', {
+      const { data } = await axios.post("http://localhost:5000/sendCode", {
         number: numRef.current.value,
       });
+      console.log(data.id, "es regitrationshi");
       setTokenId(data.id);
     } catch (error) {
       console.log(error);
@@ -22,13 +25,13 @@ export default function RegistrationForm({ onRedirection, onNumber, onId }) {
 
   const login = (e) => {
     e.preventDefault();
-    onRedirection('login');
+    onRedirection("login");
   };
 
-  return id ? (
+  return tokenId ? (
     <VerifyNumberModal
-      id={tokenId}
       onId={onId}
+      tokenId={tokenId}
       username={usernameRef.current.value}
       phone_number={numRef.current.value}
       onRedirection={onRedirection}
@@ -38,7 +41,7 @@ export default function RegistrationForm({ onRedirection, onNumber, onId }) {
     <>
       <Container
         className="align-items-center d-flex justify-content-center"
-        style={{ height: '100vh' }}
+        style={{ height: "100vh" }}
       >
         <Form className="w-50" onSubmit={handleSubmit}>
           <Form.Group>
